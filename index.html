@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Sweltering Whole Stinkbug</title>
-    <meta property="og:title" content="Sweltering Whole Stinkbug" />
+    <title>Normal Foolish Dove</title>
+    <meta property="og:title" content="Normal Foolish Dove" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
@@ -12,7 +12,7 @@
     </style>
     <style data-tag="default-style-sheet">
       html {
-        font-family: "Open Sans";
+        font-family: "Noto Sans";
         font-size: 1rem;
       }
 
@@ -21,7 +21,7 @@
         font-style:normal;
         text-decoration: undefined;
         text-transform: undefined;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.02em;
         line-height: 1.6;
         color: var(--color-on-surface);
         background: var(--color-surface);
@@ -32,6 +32,11 @@
     <link
       rel="stylesheet"
       href="https://unpkg.com/animate.css@4.1.1/animate.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;display=swap"
+      data-tag="font"
     />
     <link
       rel="stylesheet"
@@ -50,16 +55,6 @@
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
       href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
     />
   </head>
@@ -72,46 +67,32 @@
         <navigation-wrapper class="navigation-wrapper">
           <!--Navigation component-->
           <div class="navigation-container1">
-            <div class="navigation-container2">
-              <div class="navigation-container3">
-                <style>
-                  @media (prefers-reduced-motion: reduce) {
-                  .navigation-overlay.is-active {
-                    animation: none;
-                  }
-                  }
-                </style>
-              </div>
-            </div>
-            <nav class="navigation-wrapper">
+            <nav class="navigation-root">
               <div class="navigation-container">
-                <a href="index.html">
-                  <div
-                    aria-label="Mechaniczny Jeż Home"
-                    class="navigation-brand"
-                  >
-                    <span class="navigation-logo-text section-title">
-                      Mechaniczny Jeż - Montaż VESC
-                    </span>
-                  </div>
-                </a>
+                <div class="navigation-brand">
+                  <a href="index.html">
+                    <div class="navigation-logo-link">
+                      <span class="navigation-author-tag">
+                        By Mechaniczny Jeż
+                      </span>
+                    </div>
+                  </a>
+                </div>
                 <div class="navigation-desktop-menu">
-                  <ul class="navigation-links">
-                    <li class="navigation-item">
+                  <ul class="navigation-links-list">
+                    <li>
                       <a href="index.html">
-                        <div class="navigation-link">
-                          <span>Strona Główna</span>
-                        </div>
+                        <div class="navigation-link"><span>Home</span></div>
                       </a>
                     </li>
-                    <li class="navigation-item">
-                      <a href="#cennik">
+                    <li>
+                      <a href="#WIPK">
+                        <div class="navigation-link"><span>WIPK</span></div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#Cennik">
                         <div class="navigation-link"><span>Cennik</span></div>
-                      </a>
-                    </li>
-                    <li class="navigation-item">
-                      <a href="#kontakt">
-                        <div class="navigation-link"><span>Kontakt</span></div>
                       </a>
                     </li>
                   </ul>
@@ -120,75 +101,74 @@
                   id="navigation-mobile-toggle"
                   aria-label="Otwórz menu"
                   aria-expanded="false"
-                  class="navigation-toggle"
+                  class="navigation-mobile-toggle"
                 >
                   <svg
-                    fill="none"
                     width="24"
                     xmlns="http://www.w3.org/2000/svg"
                     height="24"
-                    stroke="currentColor"
                     viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    class="navigation-icon-open"
                   >
-                    <path d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
-              </div>
-              <div id="navigation-mobile-overlay" class="navigation-overlay">
-                <div class="navigation-overlay-header">
-                  <a href="index.html">
-                    <div
-                      aria-label="Mechaniczny Jeż Home"
-                      class="navigation-brand"
-                    >
-                      <span class="navigation-logo-text section-title">
-                        Mechaniczny Jeż
-                      </span>
-                    </div>
-                  </a>
-                  <button
-                    id="navigation-mobile-close"
-                    aria-label="Zamknij menu"
-                    class="navigation-toggle"
-                  >
-                    <svg
+                    <path
+                      d="M4 6h16M4 12h16M4 18h16"
                       fill="none"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="24"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <div
+                id="navigation-mobile-overlay"
+                class="navigation-mobile-overlay"
+              >
+                <div class="navigation-overlay-header">
+                  <span class="navigation-author-tag">By Mechaniczny Jeż</span>
+                  <button
+                    id="navigation-mobile-close"
+                    aria-label="Zamknij menu"
+                    class="navigation-mobile-close"
+                  >
+                    <svg
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24"
+                      viewBox="0 0 24 24"
                     >
-                      <path d="M18 6L6 18M6 6l12 12"></path>
+                      <path
+                        d="M18 6L6 18M6 6l12 12"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
                     </svg>
                   </button>
                 </div>
                 <div class="navigation-overlay-content">
-                  <ul class="navigation-overlay-links">
-                    <li class="navigation-overlay-item">
+                  <ul class="navigation-mobile-links">
+                    <li>
                       <a href="index.html">
-                        <div class="navigation-overlay-link">
-                          <span>Strona Główna</span>
+                        <div class="navigation-mobile-link">
+                          <span>Home</span>
                         </div>
                       </a>
                     </li>
-                    <li class="navigation-overlay-item">
-                      <a href="#cennik">
-                        <div class="navigation-overlay-link">
+                    <li>
+                      <a href="#WIPK">
+                        <div class="navigation-mobile-link">
+                          <span>WIPK</span>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#Cennik">
+                        <div class="navigation-mobile-link">
                           <span>Cennik</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="navigation-overlay-item">
-                      <a href="#kontakt">
-                        <div class="navigation-overlay-link">
-                          <span>Kontakt</span>
                         </div>
                       </a>
                     </li>
@@ -196,15 +176,15 @@
                 </div>
               </div>
             </nav>
-            <div class="navigation-container4">
-              <div class="navigation-container5">
+            <div class="navigation-container2">
+              <div class="navigation-container3">
                 <script defer="" data-name="navigation-logic">
                   document.addEventListener('DOMContentLoaded', function() {
                     (function(){
                       const mobileToggle = document.getElementById("navigation-mobile-toggle")
                       const mobileClose = document.getElementById("navigation-mobile-close")
                       const mobileOverlay = document.getElementById("navigation-mobile-overlay")
-                      const overlayLinks = document.querySelectorAll(".navigation-overlay-link")
+                      const mobileLinks = document.querySelectorAll(".navigation-mobile-link")
 
                       const openMenu = () => {
                         mobileOverlay.classList.add("is-active")
@@ -221,27 +201,52 @@
                       mobileToggle.addEventListener("click", openMenu)
                       mobileClose.addEventListener("click", closeMenu)
 
-                      overlayLinks.forEach((link) => {
+                      mobileLinks.forEach((link) => {
                         link.addEventListener("click", closeMenu)
                       })
 
-                      window.addEventListener("resize", () => {
-                        if (window.innerWidth > 767) {
+                      window.addEventListener("keydown", (e) => {
+                        if (e.key === "Escape" && mobileOverlay.classList.contains("is-active")) {
                           closeMenu()
                         }
                       })
+
+                      let lastScrollTop = 0
+                      const navRoot = document.querySelector(".navigation-root")
+
+                      window.addEventListener(
+                        "scroll",
+                        () => {
+                          const currentScroll = window.pageYOffset || document.documentElement.scrollTop
+
+                          if (currentScroll > 50) {
+                            navRoot.style.backgroundColor = "color-mix(in oklab, var(--color-surface) 95%, black)"
+                            navRoot.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.4)"
+                          } else {
+                            navRoot.style.backgroundColor = "var(--color-surface)"
+                            navRoot.style.boxShadow = "none"
+                          }
+
+                          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll
+                        },
+                        { passive: true }
+                      )
                     })()
                   });
                 </script>
               </div>
             </div>
-            <div class="navigation-container6">
-              <div class="navigation-container7">
+            <div class="navigation-container4">
+              <div class="navigation-container5">
                 <style>
-                          @keyframes slideIn {from {transform: translateY(-100%);
-                  opacity: 0;}
-                  to {transform: translateY(0);
-                  opacity: 1;}}
+                  @media (prefers-reduced-motion: reduce) {
+                  .navigation-mobile-overlay {
+                    transition: none;
+                  }
+                  .navigation-link, .navigation-mobile-link {
+                    transition: none;
+                  }
+                  }
                 </style>
               </div>
             </div>
@@ -250,318 +255,469 @@
         <div class="home-container2">
           <div class="home-container3">
             <style>
-              [hidden] {
-                display: none !important;
+              section {
+                padding: var(--spacing-4xl) 0;
+                overflow: hidden;
               }
             </style>
           </div>
         </div>
-        <section
-          id="pricingSection"
-          hidden="true"
-          class="home-thq-pricing-table-section-elm pricing-table-section"
-        >
-          <div class="pricing-container">
-            <div class="home-thq-pricing-card-elm">
-              <table class="pricing-table">
-                <thead>
-                  <tr>
-                    <th class="section-subtitle"><span>Typ Hulajnogi</span></th>
-                    <th class="section-subtitle"><span>Cena montażu</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="section-content"><span>Single Motor</span></td>
-                    <td class="section-content"><span>340zł</span></td>
-                  </tr>
-                  <tr>
-                    <td class="section-content"><span>Dual Motor</span></td>
-                    <td class="section-content"><span>600zł</span></td>
-                  </tr>
-                </tbody>
-              </table>
-              <button id="toWipkBtn" class="btn-primary btn btn-lg button">
-                <span>Dalej</span>
-                <svg
-                  fill="none"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="20"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+        <nav class="nav-container">
+          <div class="nav-logo"><span>By Mechaniczny Jeż</span></div>
+          <div class="nav-links">
+            <a href="#home">
+              <div class="nav-link"><span>Home</span></div>
+            </a>
+            <a href="#wipk">
+              <div class="nav-link"><span>WIPK</span></div>
+            </a>
+            <a href="#cennik">
+              <div class="nav-link"><span>Cennik</span></div>
+            </a>
+          </div>
+        </nav>
+        <section id="home" class="hero-wrapper">
+          <div class="hero-content">
+            <h1 class="hero-title home-hero-title">
+              Sterownik oparty na VESC zamontowany w twojej E-Hulajnodze.
+            </h1>
+            <p class="hero-subtitle home-hero-subtitle">
+              Mechaniczny Jeż Profesjonalnie zamontuje u ciebie VESC, a ty nawet
+              nie ruszysz palcem.
+            </p>
+            <a href="#cennik">
+              <div class="hero-cta btn-lg btn-primary btn">
+                <span>Więcej</span>
+              </div>
+            </a>
+          </div>
+        </section>
+        <section id="cennik" class="pricing-section">
+          <div class="container">
+            <div class="pricing-card">
+              <div class="pricing-header">
+                <h2 class="section-title">Ceny Montażu</h2>
+                <button
+                  id="openPricingInfo"
+                  aria-label="Informacje o montażu"
+                  class="icon-btn"
                 >
-                  <path d="M5 12h14m-7-7l7 7l-7 7"></path>
-                </svg>
-              </button>
+                  <svg
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle r="10" cx="12" cy="12"></circle>
+                      <path
+                        d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"
+                      ></path>
+                    </g>
+                  </svg>
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="pricing-table">
+                  <thead>
+                    <tr>
+                      <th><span>Typ hulajnogi</span></th>
+                      <th><span>Standard</span></th>
+                      <th><span>Premium</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span>1 Silnik</span></td>
+                      <td><span>300zł</span></td>
+                      <td><span>400zł</span></td>
+                    </tr>
+                    <tr>
+                      <td><span>2 Silniki</span></td>
+                      <td><span>500zł</span></td>
+                      <td><span>600zł</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="pricing-footer">
+                <a href="#process">
+                  <div class="btn btn-accent"><span>Dalej</span></div>
+                </a>
+              </div>
             </div>
           </div>
-          section
         </section>
-        <section id="wipkSection" hidden="true" class="info-section">
-          <div class="info-container">
-            <div class="info-card">
-              <h2 class="info-header section-title">
-                Ważne informacje i prawo konsumenta (WIPK)
-              </h2>
-              <div class="info-body">
+        <section id="process" class="process-section">
+          <div class="container">
+            <h2 class="section-title">Jak to działa</h2>
+            <div class="process-steps">
+              <div class="step-item">
+                <div class="step-icon">
+                  <svg
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 18a8 8 0 1 0 0-16a8 8 0 0 0 0 16m3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79l-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="section-subtitle">Wysyłka</h3>
                 <p class="section-content">
-                  Poprzednio ukazany cennik pokazuje ceny tylko i wyłącznie
-                  samego montażu VESC. Nie obejmuje on ceny samych sterowników
-                  VESC, ani innych kosztów, np. wysyłki hulajnogi. Wspominając o
-                  wysyłce, wysyłka kurierem to jedyny sposób przetransportowania
-                  e-hulajnogi do mnie, który akceptuję, bym wykonał montaż.
-                  Model sterownika VESC należy kupić osobiście, a koszt wysyłki
-                  hulajnogi z państwa strony do mnie, jak i spowrotem pokrywają
-                  państwo w każdym wypadku. Z uwagi, że zawsze może trafić się
-                  wadliwy model VESC, moja usługa nie posiada gwarancji w
-                  przypadku uszkodzenia sprzętu na dalszej mecie, tzn. na
-                  przykład jeśli popełnię błąd w trakcie instalacji i doprowadzę
-                  do uszkodzenia, pokrywam straty. Natomiast po każdym montażu
-                  będę nagrywał film i wysyłał państwu na dowód, że montaż odbył
-                  się poprawnie i hulajnoga też poprawnie funkcjonuje. Natomiast
-                  kiedy państwo otrzymają już gotową hulajnogę spowrotem od
-                  kuriera, a usterka pojawi się już PO otrzymaniu hulajnogi, nie
-                  ponoszę w takim wypadku odpowiedzialności za straty. Po więcej
-                  pytań zapraszam do kontaktu email na dalszej stronie.
+                  Wysyłasz pod mój adres hulajnogę kurierem.
                 </p>
               </div>
-              <div class="info-footer">
-                <button id="toContactBtn" class="btn-primary btn btn-lg">
-                  Dalej
-                </button>
+              <div class="step-divider"></div>
+              <div class="step-item">
+                <div class="step-icon">
+                  <svg
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 7v6m-8 6.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20M9 10h6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="section-subtitle">Montaż</h3>
+                <p class="section-content">
+                  Przeznaczam sporo czasu, profesjonalnie montuję VESC.
+                </p>
               </div>
+              <div class="step-divider"></div>
+              <div class="step-item">
+                <div class="step-icon">
+                  <svg
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="m15.75 10.5l4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="section-subtitle">Test &amp; Film</h3>
+                <p class="section-content">
+                  Nagrywam dowód poprawnego działania przed wysyłką.
+                </p>
+              </div>
+            </div>
+            <div class="process-action">
+              <a href="#wipk">
+                <div class="home-thq-btn-elm3 btn-outline btn">
+                  <span>Dalej</span>
+                </div>
+              </a>
             </div>
           </div>
         </section>
-        <section id="contactSection" hidden="true" class="contact-cta-section">
-          <div class="contact-container">
-            <div class="contact-card">
-              <h2 class="contact-title section-title">Zdecydowany?</h2>
-              <p class="section-content contact-subtitle">
-                Jeśli chcesz ustalić i zrealizować usługę montażu - napisz na
-                ten E-mail.
-              </p>
-              <div id="contactDisplayArea" class="contact-placeholder">
-                <span class="section-content">Dane kontaktowe ukryte</span>
-              </div>
-              <div class="contact-verification">
-                <label class="contact-checkbox-wrapper">
-                  <input
-                    type="checkbox"
-                    id="wipkCheckbox"
-                    class="home-thq-contact-checkbox-elm"
-                  />
-                  <span class="section-content">Zapoznałem się z WIPK</span>
-                </label>
-                <button
-                  id="showContactBtn"
-                  disabled="true"
-                  class="btn-primary btn btn-lg"
-                >
-                  Pokaż kontakt
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="intro-hero">
-          <div class="intro-hero-wrapper">
-            <div class="intro-hero-spotlight"></div>
-            <div class="intro-hero-content">
-              <h1 class="hero-title intro-hero-brand">
-                Mechaniczny Jeż - Montaż VESC
-              </h1>
-              <p class="hero-subtitle intro-hero-copy">
-                Poznaj cennik i dowiedz się więcej.
-              </p>
-              <div class="intro-hero-actions">
-                <button
-                  id="startJourneyBtn"
-                  class="home-thq-btn-elm3 btn-primary btn btn-xl"
-                >
-                  Zaczynamy
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="facts-section">
-          <div class="facts-container">
-            <h2 class="section-title facts-main-title">
-              Dlaczego MOŻESZ Mi zaufać?
-            </h2>
-            <div class="facts-card">
-              <div class="facts-icon">
+        <section id="wipk" class="wipk-section">
+          <div class="wipk-alert">
+            <div class="wipk-content-header">
+              <h2 class="section-title">
+                Ważne Informacje Prawno-Kontaktowe (WIPK)
+              </h2>
+              <button
+                id="openWipkInfo"
+                aria-label="Ważna notatka"
+                class="icon-btn"
+              >
                 <svg
                   width="24"
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
                   viewBox="0 0 24 24"
                 >
-                  <path
-                    d="M20 6L9 17l-5-5"
+                  <g
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                  ></path>
+                  >
+                    <circle r="10" cx="12" cy="12"></circle>
+                    <path
+                      d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"
+                    ></path>
+                  </g>
                 </svg>
-              </div>
-              <h3 class="section-subtitle">Profesjonalizm</h3>
-              <p class="home-thq-section-content-elm18 section-content">
-                Mam wiedzę elektryczną oraz doświadczenie w tego typu
-                projektach. Nie oszukam cię w żaden sposób, mam ponad 3 tyś.
-                obserwatorów na TikTok i współpracę z FLIPSKY, i w dodatku zbyt
-                dużą widownię by coś takiego mogło się stać. Nie narażę twojego
-                sprzętu na usterki. Mocy ustawisz sobie tyle, ile będziesz
-                chciał w domu, już z zamontowanym przeze mnie VESC.
-              </p>
+              </button>
             </div>
-            <div class="facts-grid">
-              <div class="facts-card">
-                <div class="facts-icon">
-                  <svg
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path
-                        d="M21 4h-3.5l2 11.05M6.95 17h5.142c.523 0 .95-.406 1.063-.916a6.5 6.5 0 0 1 5.345-5.009"
-                      ></path>
-                      <circle r="2.5" cx="19.5" cy="17.5"></circle>
-                      <circle r="2.5" cx="4.5" cy="17.5"></circle>
-                    </g>
-                  </svg>
+            <p class="section-content">
+              Poprzednio ukazany cennik pokazuje ceny tylko i wyłącznie samego
+              montażu VESC. Nie obejmuje on ceny samych sterowników VESC, ani
+              innych kosztów, np. wysyłki hulajnogi. Wspominając o wysyłce,
+              wysyłka kurierem to jedyny sposób przetransportowania e-hulajnogi
+              do mnie, który akceptuję bym wykonał montaż. Oryginalny sterownik
+              hulajnogi jak i wyświetlacz demontuję i jeśli państwo chcą,
+              wysyłam państwu razem z hulajnogą. Model sterownika VESC należy
+              kupić osobiście, a koszt wysyłki hulajnogi z państwa strony do
+              mnie, jak i spowrotem pokrywają państwo w każdym wypadku. Z uwagi,
+              że zawsze może trafić się wadliwy model VESC, moja usługa nie
+              posiada gwarancji w przypadku uszkodzenia sprzętu na dalszej
+              mecie, tzn. na przykład jeśli popełnię błąd w trakcie instalacji i
+              doprowadzę do uszkodzenia, pokrywam straty. Natomiast po każdym
+              montażu będę nagrywał film i wysyłał państwu na dowód, że montaż
+              odbył się poprawnie i hulajnoga też poprawnie funkcjonuje.
+              Natomiast kiedy państwo otrzymają już gotową hulajnogę spowrotem
+              od kuriera, a usterka pojawi się już PO otrzymaniu hulajnogi, nie
+              ponoszę w takim wypadku odpowiedzialności za straty. Ostatnie -
+              Kontaktując się ze mną i ustalając usługę, w pełni rozumieją i
+              akceptują państwo ten tekst prawny (WIPK). Nie opcji napisania na
+              mój E-Mail, i nie przeczytania tego tekstu, ponieważ dopiero po
+              nim ujawniam dane do kontaktu. Po więcej pytań zapraszam do
+              kontaktu email na dalszej stronie.
+            </p>
+            <div class="wipk-footer">
+              <a href="#contact">
+                <div class="btn btn-accent"><span>Dalej</span></div>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section id="contact" class="cta-section">
+          <div class="container">
+            <div class="cta-card">
+              <h2 class="hero-title home-hero-title">Zdecydowany?</h2>
+              <p class="section-subtitle">A może masz jeszcze pytanie?</p>
+              <div class="contact-box">
+                <div id="emailContainer" class="email-display hidden-email">
+                  <span id="emailText" tabindex="-1" class="home-text27">
+                    •••••••••••••••••••••
+                  </span>
                 </div>
-                <h3 class="section-subtitle">Single Motor</h3>
                 <p class="section-content">
-                  Kompletny montaż dla napędów pojedynczych. Optymalizacja
-                  zasięgu, zwiększenie mocy i płynności startu.
+                  Ustalisz Montaż i dopytasz o więcej pisząc pod ten E-Mail.
                 </p>
-              </div>
-              <div class="facts-card">
-                <div class="facts-icon">
-                  <svg
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path
-                        d="M16 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0"
-                      ></path>
-                      <path d="M8 17h5a6 6 0 0 1 5-5V7a2 2 0 0 0-2-2h-1"></path>
-                    </g>
-                  </svg>
+                <div class="acceptance-wrapper">
+                  <label class="checkbox-container">
+                    <input type="checkbox" id="acceptWipk" />
+                    <span class="checkmark"></span>
+                    <span>Przeczytałem i akceptuję WIPK</span>
+                  </label>
                 </div>
-                <h3 class="section-subtitle">Dual Motor</h3>
-                <p class="section-content">
-                  Montaż i Synchronizacja dwóch sterowników VESC dla
-                  ekstremalnych osiągów i pełnej kontroli.
-                </p>
+                <div class="action-buttons">
+                  <button
+                    id="showEmailBtn"
+                    disabled="true"
+                    class="btn-primary btn"
+                  >
+                    Pokaż
+                  </button>
+                  <button id="copyEmailBtn" class="btn-secondary btn hidden">
+                    Skopiuj
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </section>
-        <section class="reviews-section">
-          <div class="reviews-wrapper">
-            <h2 class="reviews-title section-title">Opinie Klientów</h2>
-            <div class="reviews-rail">
-              <div class="review-card">
-                <p class="section-content">Jeszcze nie ma :)</p>
-                <span class="section-subtitle">- Mechaniczny Jeż</span>
-              </div>
-              <div class="home-thq-review-card-elm2 review-card"></div>
-              <div class="home-thq-review-card-elm3 review-card"></div>
-              <div class="home-thq-review-card-elm4 review-card"></div>
-            </div>
+        <dialog id="pricingDialog" class="info-dialog">
+          <div class="dialog-content">
+            <button id="closePricingDialog" class="close-dialog">
+              <svg
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </button>
+            <p class="section-content">
+              <span class="home-text29">Standard</span>
+              <span>
+                - oznacza standardowy montaż sterowników, w którym tylko
+                montuję, podłączam i sprawdzam sterowniki i podłączam manetkę, a
+                oryginalny sterownik z wyświetlaczem hulajnogi znika.
+              </span>
+              <br />
+              <br />
+              <span class="home-text31">Premium</span>
+              <span>
+                - oznacza montaż sterowników z dowolnymi akcesoriami wysłanymi
+                przez państwa, np: Ekran FLIPSKY, dodatkowe przyciski na
+                kierownicy itd. Testuję także hulajnogę dłużej niż w przypadku
+                Standard i dostrajam ustawienia idealnie pod hulajnogę.
+              </span>
+              <br />
+              <br />
+              <span class="home-text33">UWAGA:</span>
+              <span>
+                W opcji Standard i tak mogą państwo wysłać np. Złączki, pastę
+                termo przewodzącą, jest to nawet wskazane. Ustawienia także są
+                ustawiane bardzo precyzyjnie i dopasowane do hulajnogi,
+                natomiast mniej przeznaczam na to czasu.
+              </span>
+            </p>
           </div>
-        </section>
+        </dialog>
+        <dialog id="wipkDialog" class="info-dialog">
+          <div class="dialog-content">
+            <button id="closeWipkDialog" class="close-dialog">
+              <svg
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </button>
+            <p class="section-content">
+              Zachowanie wyświetlacza i świateł wymaga zachowania oryginalnego
+              sterownika. Zazwyczaj nie mieści się on w hulajnodze razem z nowym
+              sterownikiem/sterownikami VESC, dlatego nie oferuję takiego
+              montażu z zachowaniem sterownika oryginalnego. Pytania proszę
+              zadać poprzez E-mail na następnej stronie.
+            </p>
+          </div>
+        </dialog>
         <div class="home-container4">
           <div class="home-container5">
             <script>
               document.addEventListener('DOMContentLoaded', function() {
                 ;(function () {
-                          const startBtn = document.getElementById("startJourneyBtn")
-                          const pricingSec = document.getElementById("pricingSection")
-                          const wipkSec = document.getElementById("wipkSection")
-                          const contactSec = document.getElementById("contactSection")
-                          const toWipkBtn = document.getElementById("toWipkBtn")
-                          const toContactBtn = document.getElementById("toContactBtn")
-                          const wipkCheckbox = document.getElementById("wipkCheckbox")
-                          const showContactBtn = document.getElementById("showContactBtn")
-                          const contactArea = document.getElementById("contactDisplayArea")
-                          // Navigation Logic
-                          if (startBtn) {
-                            startBtn.addEventListener("click", () => {
-                              pricingSec.hidden = false
-                              pricingSec.classList.add("fade-in-up")
-                              pricingSec.scrollIntoView({ behavior: "smooth" })
+                          // Dialog Management
+                          const pricingDialog = document.getElementById("pricingDialog")
+                          const wipkDialog = document.getElementById("wipkDialog")
+                          const openPricingBtn = document.getElementById("openPricingInfo")
+                          const closePricingBtn = document.getElementById("closePricingDialog")
+                          const openWipkBtn = document.getElementById("openWipkInfo")
+                          const closeWipkBtn = document.getElementById("closeWipkDialog")
+                          openPricingBtn.addEventListener("click", () => pricingDialog.showModal())
+                          closePricingBtn.addEventListener("click", () => pricingDialog.close())
+                          openWipkBtn.addEventListener("click", () => wipkDialog.showModal())
+                          closeWipkBtn.addEventListener("click", () => wipkDialog.close())
+                          // Close dialogs on backdrop click
+                          ;[pricingDialog, wipkDialog].forEach((dialog) => {
+                            dialog.addEventListener("click", (e) => {
+                              if (e.target === dialog) dialog.close()
                             })
-                          }
-                          if (toWipkBtn) {
-                            toWipkBtn.addEventListener("click", () => {
-                              wipkSec.hidden = false
-                              wipkSec.classList.add("fade-in-up")
-                              wipkSec.scrollIntoView({ behavior: "smooth" })
-                            })
-                          }
-                          if (toContactBtn) {
-                            toContactBtn.addEventListener("click", () => {
-                              contactSec.hidden = false
-                              contactSec.classList.add("fade-in-up")
-                              contactSec.scrollIntoView({ behavior: "smooth" })
-                            })
-                          }
+                          })
                           // Contact Logic
-                          if (wipkCheckbox) {
-                            wipkCheckbox.addEventListener("change", (e) => {
-                              if (showContactBtn) showContactBtn.disabled = !e.target.checked
-                            })
-                            // Accessibility: Handle Enter on Checkbox
-                            wipkCheckbox.addEventListener("keydown", (e) => {
-                              if (e.key === "Enter") {
-                                wipkCheckbox.click()
+                          const acceptWipk = document.getElementById("acceptWipk")
+                          const showEmailBtn = document.getElementById("showEmailBtn")
+                          const copyEmailBtn = document.getElementById("copyEmailBtn")
+                          const emailContainer = document.getElementById("emailContainer")
+                          const emailText = document.getElementById("emailText")
+                          const REAL_EMAIL = "2maze.kontakt@gmail.com"
+                          acceptWipk.addEventListener("change", (e) => {
+                            showEmailBtn.disabled = !e.target.checked
+                          })
+                          showEmailBtn.addEventListener("click", () => {
+                            emailContainer.classList.remove("hidden-email")
+                            emailContainer.classList.add("visible-email")
+                            emailText.textContent = REAL_EMAIL
+                            showEmailBtn.classList.add("hidden")
+                            copyEmailBtn.classList.remove("hidden")
+                          })
+                          copyEmailBtn.addEventListener("click", () => {
+                            const showSuccess = () => {
+                              const originalText = copyEmailBtn.textContent
+                              copyEmailBtn.textContent = "Skopiowano!"
+                              copyEmailBtn.classList.replace("btn-secondary", "btn-accent")
+                              setTimeout(() => {
+                                copyEmailBtn.textContent = originalText
+                                copyEmailBtn.classList.replace("btn-accent", "btn-secondary")
+                              }, 2000)
+                            }
+
+                            const fallbackCopy = () => {
+                              const wasHidden = emailContainer.classList.contains("hidden-email")
+                              emailContainer.classList.remove("hidden-email")
+                              emailContainer.classList.add("visible-email")
+                              emailText.textContent = REAL_EMAIL
+
+                              const range = document.createRange()
+                              range.selectNodeContents(emailText)
+                              const selection = window.getSelection()
+                              selection.removeAllRanges()
+                              selection.addRange(range)
+                              emailText.focus()
+
+                              let copied = false
+                              try {
+                                copied = document.execCommand("copy")
+                              } catch (err) {
+                                copied = false
+                              }
+
+                              selection.removeAllRanges()
+                              if (wasHidden) {
+                                emailContainer.classList.remove("visible-email")
+                                emailContainer.classList.add("hidden-email")
+                                emailText.textContent = "•••••••••••••••••••••"
+                              }
+                              return copied
+                            }
+
+                            if (navigator.clipboard && navigator.clipboard.writeText) {
+                              navigator.clipboard
+                                .writeText(REAL_EMAIL)
+                                .then(showSuccess)
+                                .catch(() => {
+                                  if (fallbackCopy()) showSuccess()
+                                })
+                            } else {
+                              if (fallbackCopy()) showSuccess()
+                            }
+                          })
+                          // Simple Scroll handling for nav links
+                          document.querySelectorAll(".nav-link").forEach((link) => {
+                            link.addEventListener("click", (e) => {
+                              const targetId = link.getAttribute("href")
+                              if (targetId.startsWith("#")) {
+                                const targetElement = document.querySelector(targetId)
+                                if (targetElement) {
+                                  e.preventDefault()
+                                  targetElement.scrollIntoView({ behavior: "smooth" })
+                                }
                               }
                             })
-                          }
-                          if (showContactBtn) {
-                            showContactBtn.addEventListener("click", () => {
-                              const email = "2maze.kontakt@gmail.com"
-                              contactArea.innerHTML = '<span class="section-content">' + email + '</span> <button class="btn btn-sm copy-btn" data-action="copy-email" style="margin-left:0.5rem;background-color:var(--color-neutral);color:var(--color-on-surface);border:1px solid var(--color-border);">Kopiuj</button>'
-                              contactArea.classList.add("contact-email-active")
-                              showContactBtn.style.display = "none"
-                              contactArea.querySelector('[data-action="copy-email"]').addEventListener("click", () => {
-                                const tempInput = document.createElement("input")
-                                tempInput.value = email
-                                document.body.appendChild(tempInput)
-                                tempInput.select()
-                                document.execCommand("copy")
-                                document.body.removeChild(tempInput)
-                                alert("Skopiowano!")
-                              })
-                            })
-                          }
+                          })
                         })()
               });
             </script>
@@ -570,280 +726,15 @@
         <div class="home-container6">
           <div class="home-container7">
             <style>
-                      @keyframes fadeInUp {from {opacity: 0;
-              transform: translateY(30px);}
-              to {opacity: 1;
-              transform: translateY(0);}}
+                      @keyframes pulse {0% {transform: scale(1);
+              box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4);}
+              70% {transform: scale(1.05);
+              box-shadow: 0 0 0 15px rgba(0, 102, 255, 0);}
+              100% {transform: scale(1);
+              box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);}}
             </style>
           </div>
         </div>
-        <footer-wrapper class="footer-wrapper">
-          <!--Footer component-->
-          <div class="footer-container1">
-            <footer class="footer-thq-footer-main-elm footer-main">
-              <div class="footer-container">
-                <div class="footer-header">
-                  <h2 class="section-title footer-brand-title">
-                    Mechaniczny Jeż - Montaż VESC
-                  </h2>
-                </div>
-                <div class="footer-dynamic-content">
-                  <div id="footer-step-1" class="is-active footer-step">
-                    <div class="footer-hero-box">
-                      <h1 class="hero-title footer-cta-text">
-                        Poznaj cennik i dowiedz się więcej.
-                      </h1>
-                      <button id="btn-start" class="btn-primary btn btn-lg">
-                        <span>Zaczynamy</span>
-                        <svg
-                          fill="none"
-                          width="20"
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="20"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path d="M5 12h14m-7-7l7 7l-7 7"></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="footer-step-2" class="footer-step">
-                    <div class="footer-table-wrapper">
-                      <table class="footer-pricing-table">
-                        <thead>
-                          <tr>
-                            <th class="section-subtitle">
-                              <span>Typ Hulajnogi</span>
-                            </th>
-                            <th class="section-subtitle">
-                              <span>Cena montażu</span>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="section-content">
-                              <span>Single Motor</span>
-                            </td>
-                            <td class="section-content"><span>340zł</span></td>
-                          </tr>
-                          <tr>
-                            <td class="section-content">
-                              <span>Dual Motor</span>
-                            </td>
-                            <td class="section-content"><span>600zł</span></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <button id="btn-to-wipk" class="btn-primary btn btn-lg">
-                        <span>Dalej</span>
-                        <svg
-                          fill="none"
-                          width="20"
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="20"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path d="M5 12h14m-7-7l7 7l-7 7"></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="footer-step-3" class="footer-step">
-                    <div class="footer-info-wrapper">
-                      <h2 class="section-title">
-                        Ważne informacje i prawo konsumenta (WIPK)
-                      </h2>
-                      <div class="footer-info-text">
-                        <p class="section-content">
-                          Poprzednio ukazany cennik pokazuje ceny tylko i
-                          wyłącznie samego montażu VESC. Nie obejmuje on ceny
-                          samych sterowników VESC, ani innych kosztów, np.
-                          wysyłki hulajnogi. Wspominając o wysyłce, wysyłka
-                          kurierem to jedyny sposób przetransportowania
-                          e-hulajnogi do mnie, który akceptuję, bym wykonał
-                          montaż. Model sterownika VESC należy kupić osobiście,
-                          a koszt wysyłki hulajnogi z państwa strony do mnie,
-                          jak i spowrotem pokrywają państwo w każdym wypadku. Z
-                          uwagi, że zawsze może trafić się wadliwy model VESC,
-                          moja usługa nie posiada gwarancji w przypadku
-                          uszkodzenia sprzętu na dalszej mecie, tzn. na przykład
-                          jeśli popełnię błąd w trakcie instalacji i doprowadzę
-                          do uszkodzenia, pokrywam straty. Natomiast po każdym
-                          montażu będę nagrywał film i wysyłał państwu na dowód,
-                          że montaż odbył się poprawnie i hulajnoga też
-                          poprawnie funkcjonuje. Natomiast kiedy państwo
-                          otrzymają już gotową hulajnogę spowrotem od kuriera, a
-                          usterka pojawi się już PO otrzymaniu hulajnogi, nie
-                          ponoszę w takim wypadku odpowiedzialności za straty.
-                          Po więcej pytań zapraszam do kontaktu email na dalszej
-                          stronie.
-                        </p>
-                      </div>
-                      <button
-                        id="btn-to-contact"
-                        class="btn-primary btn btn-lg"
-                      >
-                        <span>Dalej</span>
-                        <svg
-                          fill="none"
-                          width="20"
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="20"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path d="M5 12h14m-7-7l7 7l-7 7"></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="footer-step-4" class="footer-step">
-                    <div class="footer-contact-wrapper">
-                      <h2 class="section-title">
-                        Zdecydowany? Jeśli chcesz ustalić i zrealizować usługę
-                        montażu - napisz na ten E-mail.
-                      </h2>
-                      <div id="contact-placeholder" class="footer-contact-box">
-                        <div class="footer-email-mask"></div>
-                      </div>
-                      <div class="footer-consent-group">
-                        <label class="footer-checkbox-label">
-                          <input
-                            type="checkbox"
-                            id="wipk-checkbox"
-                            class="footer-thq-footer-checkbox-elm"
-                          />
-                          <span
-                            class="footer-thq-footer-checkbox-custom-elm"
-                          ></span>
-                          <span class="section-content">
-                            Zapoznałem się z WIPK
-                          </span>
-                        </label>
-                      </div>
-                      <button
-                        id="btn-show-contact"
-                        disabled="true"
-                        class="btn-primary btn btn-lg"
-                      >
-                        <span>Pokaż kontakt</span>
-                        <svg
-                          fill="none"
-                          width="20"
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="20"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path
-                            d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"
-                          ></path>
-                          <rect
-                            x="2"
-                            y="4"
-                            rx="2"
-                            width="20"
-                            height="16"
-                          ></rect>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="footer-bottom">
-                  <p class="section-content footer-copyright">
-                    © 2026 Mechaniczny Jeż. Wszelkie prawa zastrzeżone.
-                  </p>
-                </div>
-              </div>
-            </footer>
-            <div class="footer-container2">
-              <div class="footer-container3">
-                <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                    ;(function () {
-                                  const steps = [document.getElementById("footer-step-1"), document.getElementById("footer-step-2"), document.getElementById("footer-step-3"), document.getElementById("footer-step-4")]
-                                  const btnStart = document.getElementById("btn-start")
-                                  const btnToWipk = document.getElementById("btn-to-wipk")
-                                  const btnToContact = document.getElementById("btn-to-contact")
-                                  const btnShowContact = document.getElementById("btn-show-contact")
-                                  const wipkCheckbox = document.getElementById("wipk-checkbox")
-                                  const contactBox = document.getElementById("contact-placeholder")
-                                  function showStep(stepIndex) {
-                                    steps.forEach((step, index) => {
-                                      if (index === stepIndex) {
-                                        step.classList.add("is-active")
-                                      } else {
-                                        step.classList.remove("is-active")
-                                      }
-                                    })
-                                    // Scroll slightly to keep content in view if needed
-                                    if (stepIndex > 0) {
-                                      window.scrollTo({
-                                        top: document.querySelector(".footer-main").offsetTop,
-                                        behavior: "smooth",
-                                      })
-                                    }
-                                  }
-                                  btnStart.addEventListener("click", () => showStep(1))
-                                  btnToWipk.addEventListener("click", () => showStep(2))
-                                  btnToContact.addEventListener("click", () => showStep(3))
-                                  wipkCheckbox.addEventListener("change", (e) => {
-                                    btnShowContact.disabled = !e.target.checked
-                                  })
-                                  btnShowContact.addEventListener("click", () => {
-                                    const email = "2maze.kontakt@gmail.com"
-                                    contactBox.innerHTML = '<span class="footer-email-reveal">' + email + '</span> <button class="btn btn-sm copy-btn" data-action="copy-email-footer" style="margin-left:0.5rem;background-color:var(--color-neutral);color:var(--color-on-surface);border:1px solid var(--color-border);">Kopiuj</button>'
-                                    contactBox.style.backgroundColor = "transparent"
-                                    contactBox.style.border = "1px solid var(--color-primary)"
-                                    btnShowContact.style.display = "none"
-                                    // Add a small success animation
-                                    contactBox.style.transform = "scale(1.05)"
-                                    setTimeout(() => {
-                                      contactBox.style.transform = "scale(1)"
-                                    }, 200)
-                                    contactBox.querySelector('[data-action="copy-email-footer"]').addEventListener("click", () => {
-                                      const tempInput = document.createElement("input")
-                                      tempInput.value = email
-                                      document.body.appendChild(tempInput)
-                                      tempInput.select()
-                                      document.execCommand("copy")
-                                      document.body.removeChild(tempInput)
-                                      alert("Skopiowano!")
-                                    })
-                                  })
-                                })()
-                  });
-                </script>
-              </div>
-            </div>
-            <div class="footer-container4">
-              <div class="footer-container5">
-                <style>
-                          @keyframes fadeIn {from {opacity: 0;
-                  transform: translateY(10px);}
-                  to {opacity: 1;
-                  transform: translateY(0);}}
-                </style>
-              </div>
-            </div>
-          </div>
-        </footer-wrapper>
         <a href="https://play.teleporthq.io/signup">
           <div aria-label="Sign up to TeleportHQ" class="home-container8">
             <svg
@@ -852,7 +743,7 @@
               viewBox="0 0 19 21"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              class="home-icon23"
+              class="home-icon28"
             >
               <path
                 d="M9.1017 4.64355H2.17867C0.711684 4.64355 -0.477539 5.79975 -0.477539 7.22599V13.9567C-0.477539 15.3829 0.711684 16.5391 2.17867 16.5391H9.1017C10.5687 16.5391 11.7579 15.3829 11.7579 13.9567V7.22599C11.7579 5.79975 10.5687 4.64355 9.1017 4.64355Z"
@@ -867,13 +758,13 @@
                 fill="#2874DE"
               ></path>
             </svg>
-            <span class="home-text8">Built in TeleportHQ</span>
+            <span class="home-text35">Built in TeleportHQ</span>
           </div>
         </a>
       </div>
       <link
         rel="canonical"
-        href="https://sweltering-whole-stinkbug-x2ruea.teleporthq.site/"
+        href="https://normal-foolish-dove-a6bkxz.teleporthq.site/"
       />
     </div>
   </body>
