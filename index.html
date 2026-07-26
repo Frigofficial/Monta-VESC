@@ -1,831 +1,2535 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Usługi VESC</title>
-    <meta property="og:title" content="Normal Foolish Dove" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta property="twitter:card" content="summary_large_image" />
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07101f">
+  <meta name="description" content="Montaż i konfiguracja sterowników VESC do hulajnóg elektrycznych — Mechaniczny Jeż.">
+  <title>Mechaniczny Jeż — Montaż i konfiguracja VESC</title>
 
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;  -webkit-font-smoothing: antialiased;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;  color: inherit;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}pre {  white-space: normal;}input {  padding: 2px 4px;}img {  display: block;}details {  display: block;  margin: 0;  padding: 0;}summary::-webkit-details-marker {  display: none;}[data-thq="accordion"] [data-thq="accordion-content"] {  max-height: 0;  overflow: hidden;  transition: max-height 0.3s ease-in-out;  padding: 0;}[data-thq="accordion"] details[data-thq="accordion-trigger"][open] + [data-thq="accordion-content"] {  max-height: 1000vh;}details[data-thq="accordion-trigger"][open] summary [data-thq="accordion-icon"] {  transform: rotate(180deg);}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: "Noto Sans";
-        font-size: 1rem;
+  <style>
+    :root{
+      --bg:#060914;
+      --bg-2:#091224;
+      --panel:rgba(13,25,45,.72);
+      --panel-strong:#0f1c31;
+      --panel-soft:rgba(255,255,255,.035);
+      --text:#f4f8ff;
+      --muted:#9fb0c9;
+      --line:rgba(99,179,255,.22);
+      --line-strong:rgba(84,202,255,.52);
+      --blue:#29a9ff;
+      --cyan:#4af4ff;
+      --violet:#8257ff;
+      --pink:#ff4fd8;
+      --success:#49e3a5;
+      --warning:#ffcc70;
+      --shadow:0 24px 80px rgba(0,0,0,.34);
+      --radius:24px;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-width:320px;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(65,112,255,.16), transparent 34rem),
+        radial-gradient(circle at 88% 20%, rgba(0,238,255,.10), transparent 30rem),
+        radial-gradient(circle at 70% 82%, rgba(255,79,216,.08), transparent 28rem),
+        linear-gradient(180deg, #050812 0%, #07101f 48%, #050812 100%);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:54px 54px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), transparent 92%);
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:auto -20vw -26rem auto;
+      width:50rem;
+      height:50rem;
+      border-radius:50%;
+      z-index:-1;
+      pointer-events:none;
+      background:radial-gradient(circle, rgba(41,169,255,.12), transparent 64%);
+      filter:blur(20px);
+    }
+
+    ::selection{background:rgba(74,244,255,.25); color:#fff}
+    a{color:inherit}
+    button,input{font:inherit}
+    img,svg{display:block;max-width:100%}
+
+    .skip-link{
+      position:fixed;
+      left:12px;
+      top:-100px;
+      z-index:1000;
+      padding:.7rem 1rem;
+      border-radius:12px;
+      color:#04101b;
+      background:var(--cyan);
+      font-weight:800;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+    .skip-link:focus{top:12px}
+
+    .container{
+      width:min(calc(100% - 36px), var(--max));
+      margin-inline:auto;
+    }
+
+    .section{
+      padding:96px 0;
+      position:relative;
+      scroll-margin-top:92px;
+    }
+
+    .section.compact{padding:72px 0}
+    .section.alt::before{
+      content:"";
+      position:absolute;
+      inset:16px 0;
+      z-index:-1;
+      border-block:1px solid rgba(255,255,255,.035);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.025) 20%, rgba(255,255,255,.025) 80%, transparent);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      margin:0 0 14px;
+      color:var(--cyan);
+      font-size:.78rem;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .eyebrow::before{
+      content:"";
+      width:26px;
+      height:2px;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+      box-shadow:0 0 18px var(--cyan);
+    }
+
+    h1,h2,h3,p{margin-top:0}
+    h1,h2,h3{
+      line-height:1.08;
+      letter-spacing:-.035em;
+    }
+    h1{
+      max-width:760px;
+      margin-bottom:22px;
+      font-size:clamp(2.75rem,7vw,6.4rem);
+      font-weight:950;
+      text-wrap:balance;
+    }
+    h2{
+      margin-bottom:18px;
+      font-size:clamp(2rem,4.2vw,4rem);
+      font-weight:920;
+      text-wrap:balance;
+    }
+    h3{
+      margin-bottom:10px;
+      font-size:clamp(1.15rem,2vw,1.55rem);
+      font-weight:850;
+    }
+    .lead{
+      max-width:710px;
+      color:#c2cee0;
+      font-size:clamp(1.03rem,2vw,1.25rem);
+    }
+    .muted{color:var(--muted)}
+    .accent{
+      color:transparent;
+      background:linear-gradient(100deg,#fff 0%,#9eeaff 42%,#55beff 68%,#d38cff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+    }
+
+    .site-header{
+      position:fixed;
+      inset:0 0 auto;
+      z-index:100;
+      padding:12px 0;
+      transition:background .25s ease,border-color .25s ease,box-shadow .25s ease;
+    }
+    .site-header.is-scrolled{
+      background:rgba(5,9,20,.78);
+      border-bottom:1px solid rgba(105,186,255,.14);
+      box-shadow:0 12px 44px rgba(0,0,0,.22);
+      backdrop-filter:blur(18px);
+    }
+    .nav{
+      min-height:62px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:max-content;
+      text-decoration:none;
+    }
+    .brand-mark{
+      width:44px;
+      aspect-ratio:1;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line-strong);
+      border-radius:15px;
+      background:
+        linear-gradient(145deg,rgba(57,174,255,.22),rgba(130,87,255,.08)),
+        rgba(255,255,255,.035);
+      box-shadow:inset 0 0 24px rgba(41,169,255,.08),0 0 24px rgba(41,169,255,.10);
+    }
+    .brand-mark svg{width:26px}
+    .brand-copy{line-height:1.05}
+    .brand-copy strong{
+      display:block;
+      font-size:.9rem;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+    .brand-copy span{
+      color:var(--muted);
+      font-size:.68rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .nav-links a{
+      position:relative;
+      padding:.72rem .8rem;
+      border-radius:11px;
+      color:#c5d0df;
+      font-size:.78rem;
+      font-weight:850;
+      letter-spacing:.045em;
+      text-decoration:none;
+      text-transform:uppercase;
+      transition:.2s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active{
+      color:#fff;
+      background:rgba(255,255,255,.05);
+    }
+    .nav-links a.active::after{
+      content:"";
+      position:absolute;
+      left:.8rem;
+      right:.8rem;
+      bottom:.36rem;
+      height:2px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+      box-shadow:0 0 12px var(--cyan);
+    }
+
+    .menu-btn{
+      display:none;
+      width:44px;
+      height:44px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      color:#fff;
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+    }
+    .menu-btn span,
+    .menu-btn::before,
+    .menu-btn::after{
+      content:"";
+      display:block;
+      width:20px;
+      height:2px;
+      margin:4px auto;
+      border-radius:999px;
+      background:currentColor;
+      transition:.2s ease;
+    }
+    .menu-btn[aria-expanded="true"] span{opacity:0}
+    .menu-btn[aria-expanded="true"]::before{transform:translateY(6px) rotate(45deg)}
+    .menu-btn[aria-expanded="true"]::after{transform:translateY(-6px) rotate(-45deg)}
+
+    .hero{
+      min-height:100svh;
+      display:grid;
+      align-items:center;
+      padding:130px 0 70px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:8% -12% auto auto;
+      width:48rem;
+      height:48rem;
+      border-radius:50%;
+      background:
+        conic-gradient(from 190deg,rgba(74,244,255,.04),rgba(130,87,255,.16),rgba(255,79,216,.05),rgba(74,244,255,.04));
+      filter:blur(18px);
+      opacity:.8;
+      animation:floatOrb 12s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.08fr) minmax(370px,.92fr);
+      align-items:center;
+      gap:72px;
+    }
+    .hero-copy{position:relative;z-index:2}
+    .hero-copy .lead{max-width:650px}
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:32px;
+    }
+    .btn{
+      min-height:50px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.65rem;
+      padding:.85rem 1.15rem;
+      border:1px solid transparent;
+      border-radius:14px;
+      color:#fff;
+      background:transparent;
+      font-weight:850;
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn:active{transform:translateY(0)}
+    .btn-primary{
+      color:#03111e;
+      background:linear-gradient(135deg,var(--cyan),var(--blue));
+      box-shadow:0 12px 34px rgba(41,169,255,.24),inset 0 1px rgba(255,255,255,.65);
+    }
+    .btn-primary:hover{box-shadow:0 16px 44px rgba(41,169,255,.34)}
+    .btn-secondary{
+      border-color:var(--line);
+      background:rgba(255,255,255,.035);
+      box-shadow:inset 0 1px rgba(255,255,255,.04);
+    }
+    .btn-secondary:hover{border-color:var(--line-strong);background:rgba(255,255,255,.06)}
+    .btn-magenta{
+      color:#fff;
+      background:linear-gradient(135deg,var(--pink),#955dff);
+      box-shadow:0 12px 34px rgba(255,79,216,.22);
+    }
+
+    .btn-vesc-guide{
+      position:relative;
+      min-width:190px;
+      min-height:62px;
+      padding:10px 38px 10px 18px;
+      overflow:hidden;
+      border-color:rgba(166,119,255,.42);
+      background:
+        radial-gradient(circle at 20% 10%,rgba(74,244,255,.12),transparent 36%),
+        linear-gradient(135deg,rgba(92,77,202,.82),rgba(24,119,188,.74));
+      box-shadow:
+        0 14px 34px rgba(74,92,255,.17),
+        inset 0 1px rgba(255,255,255,.16);
+      text-align:left;
+      isolation:isolate;
+    }
+    .btn-vesc-guide::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:linear-gradient(120deg,transparent 18%,rgba(255,255,255,.12) 48%,transparent 72%);
+      transform:translateX(-120%);
+      animation:guideButtonSheen 5.8s ease-in-out infinite;
+    }
+    .btn-vesc-guide:hover{
+      border-color:rgba(74,244,255,.48);
+      box-shadow:
+        0 18px 42px rgba(48,160,255,.24),
+        inset 0 1px rgba(255,255,255,.18);
+    }
+    .guide-button-copy{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      line-height:1.02;
+    }
+    .guide-button-copy strong{
+      display:block;
+      font-size:.98rem;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+    .guide-button-copy small{
+      display:block;
+      margin-top:5px;
+      color:#d8e6ff;
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .spark-cluster{
+      position:absolute;
+      width:18px;
+      height:18px;
+      opacity:.22;
+      pointer-events:none;
+    }
+    .spark-cluster i{
+      position:absolute;
+      display:block;
+      width:3px;
+      height:3px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 7px rgba(255,255,255,.9);
+      animation:cornerSpark 4.8s ease-in-out infinite;
+    }
+    .spark-cluster i:nth-child(1){left:1px;top:8px}
+    .spark-cluster i:nth-child(2){left:8px;top:1px;animation-delay:-1.2s}
+    .spark-cluster i:nth-child(3){right:1px;bottom:1px;animation-delay:-2.4s}
+    .spark-cluster.tl{left:5px;top:5px}
+    .spark-cluster.tr{right:5px;top:5px;transform:rotate(90deg)}
+    .spark-cluster.bl{left:5px;bottom:5px;transform:rotate(-90deg)}
+    .spark-cluster.br{right:5px;bottom:5px;transform:rotate(180deg)}
+
+    .vesc-modal{
+      position:fixed;
+      inset:0;
+      z-index:10020;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      background:rgba(2,6,15,.76);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:opacity .22s ease,visibility .22s ease;
+    }
+    .vesc-modal.open{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+    .vesc-modal-panel{
+      width:min(940px,100%);
+      max-height:min(86vh,780px);
+      overflow:auto;
+      border:1px solid rgba(74,244,255,.28);
+      border-radius:28px;
+      background:
+        radial-gradient(circle at 100% 0,rgba(130,87,255,.18),transparent 34%),
+        linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018)),
+        #081225;
+      box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.07);
+      transform:translateY(18px) scale(.985);
+      transition:transform .25s ease;
+    }
+    .vesc-modal.open .vesc-modal-panel{
+      transform:none;
+    }
+    .vesc-modal-head{
+      position:sticky;
+      top:0;
+      z-index:2;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:22px;
+      padding:26px 26px 20px;
+      border-bottom:1px solid rgba(255,255,255,.065);
+      background:rgba(8,18,37,.92);
+    }
+    .vesc-modal-head h2{
+      margin:4px 0 8px;
+      font-size:clamp(1.8rem,4vw,3rem);
+    }
+    .vesc-modal-head p{
+      max-width:650px;
+      margin:0;
+      color:var(--muted);
+    }
+    .modal-close{
+      width:44px;
+      height:44px;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      border:1px solid var(--line);
+      border-radius:13px;
+      color:#fff;
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .modal-close:hover{
+      border-color:var(--line-strong);
+      background:rgba(255,255,255,.075);
+      transform:rotate(5deg);
+    }
+    .modal-close svg{width:20px}
+    .vesc-modal-body{
+      padding:24px 26px 28px;
+    }
+    .vesc-table-wrap{
+      overflow-x:auto;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:18px;
+    }
+    .vesc-table{
+      width:100%;
+      min-width:700px;
+      border-collapse:collapse;
+    }
+    .vesc-table th,
+    .vesc-table td{
+      padding:17px 18px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      text-align:left;
+      vertical-align:middle;
+    }
+    .vesc-table tr:last-child td{border-bottom:0}
+    .vesc-table th{
+      color:#bdf9ff;
+      background:rgba(74,244,255,.055);
+      font-size:.76rem;
+      font-weight:900;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+    .vesc-table td:first-child{
+      color:#fff;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .vesc-table td{
+      color:#c9d5e6;
+    }
+    .vesc-table tbody tr{
+      transition:background .2s ease;
+    }
+    .vesc-table tbody tr:hover{
+      background:rgba(255,255,255,.03);
+    }
+    .vesc-note{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      margin:20px 0 0;
+      padding:15px 16px;
+      border:1px solid rgba(255,204,112,.2);
+      border-radius:15px;
+      color:#d8e2ef;
+      background:rgba(255,204,112,.055);
+    }
+    .vesc-note svg{
+      width:20px;
+      flex:0 0 auto;
+      margin-top:2px;
+      color:var(--warning);
+    }
+    body.modal-open{
+      overflow:hidden;
+    }
+    .btn:disabled{
+      opacity:.44;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+
+    .trust-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px 28px;
+      margin-top:36px;
+      color:#c4d0df;
+      font-size:.9rem;
+    }
+    .trust-item{
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+    }
+    .trust-item svg{width:18px;color:var(--cyan)}
+
+    .hero-panel{
+      position:relative;
+      min-height:520px;
+      padding:18px;
+      border:1px solid rgba(100,189,255,.25);
+      border-radius:32px;
+      background:
+        linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.015)),
+        rgba(6,12,25,.78);
+      box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.08);
+      backdrop-filter:blur(14px);
+      isolation:isolate;
+    }
+    .hero-panel::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      z-index:-1;
+      border-radius:inherit;
+      padding:1px;
+      background:linear-gradient(140deg,rgba(74,244,255,.5),transparent 32%,transparent 68%,rgba(130,87,255,.45));
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+    }
+    .window-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:4px 4px 16px;
+      color:var(--muted);
+      font-size:.74rem;
+    }
+    .dots{display:flex;gap:6px}
+    .dots i{
+      width:8px;height:8px;border-radius:50%;
+      background:rgba(255,255,255,.22)
+    }
+    .window-status{
+      display:flex;align-items:center;gap:7px
+    }
+    .window-status::before{
+      content:"";
+      width:7px;height:7px;border-radius:50%;
+      background:var(--success);
+      box-shadow:0 0 14px var(--success);
+    }
+
+    .telemetry{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .info-telemetry{
+      grid-auto-rows:1fr;
+    }
+    .info-telemetry .tele-card{
+      min-height:202px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:14px;
+      padding:22px;
+      background:
+        radial-gradient(circle at 100% 0,rgba(41,169,255,.10),transparent 45%),
+        rgba(255,255,255,.035);
+    }
+    .info-telemetry .tele-card:nth-child(2),
+    .info-telemetry .tele-card:nth-child(4){
+      background:
+        radial-gradient(circle at 100% 0,rgba(130,87,255,.12),transparent 45%),
+        rgba(255,255,255,.035);
+    }
+    .tele-feature-icon{
+      width:45px;
+      height:45px;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      border:1px solid rgba(74,244,255,.22);
+      border-radius:14px;
+      color:var(--cyan);
+      background:rgba(74,244,255,.055);
+      box-shadow:inset 0 0 20px rgba(74,244,255,.035);
+    }
+    .tele-feature-icon svg{width:22px}
+    .tele-feature-copy h3{
+      margin:0 0 8px;
+      font-size:1.05rem;
+      letter-spacing:-.02em;
+    }
+    .tele-feature-copy p{
+      margin:0;
+      color:var(--muted);
+      font-size:.87rem;
+      line-height:1.55;
+    }
+    .tele-card{
+      min-height:130px;
+      padding:17px;
+      border:1px solid rgba(255,255,255,.065);
+      border-radius:19px;
+      background:rgba(255,255,255,.035);
+      box-shadow:inset 0 1px rgba(255,255,255,.04);
+    }
+    .tele-card.wide{grid-column:1/-1;min-height:190px}
+    .tele-label{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:13px;
+      color:var(--muted);
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .tele-value{
+      display:flex;
+      align-items:baseline;
+      gap:7px;
+      font-size:2rem;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+    .tele-value small{
+      color:var(--muted);
+      font-size:.75rem;
+      font-weight:800;
+      letter-spacing:.04em;
+    }
+    .mini-bar{
+      height:7px;
+      margin-top:18px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.06);
+    }
+    .mini-bar span{
+      display:block;
+      height:100%;
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+      box-shadow:0 0 16px rgba(74,244,255,.45);
+      animation:pulseBar 3.2s ease-in-out infinite alternate;
+    }
+
+    .chart{
+      height:126px;
+      position:relative;
+      overflow:hidden;
+      border-radius:14px;
+      background:
+        linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+      background-size:100% 25%,12.5% 100%;
+    }
+    .chart svg{
+      position:absolute;
+      inset:12px 0 0;
+      width:100%;
+      height:110px;
+      overflow:visible;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.45rem .65rem;
+      border:1px solid rgba(74,244,255,.22);
+      border-radius:999px;
+      color:#bdffff;
+      background:rgba(74,244,255,.07);
+      font-size:.72rem;
+      font-weight:800;
+    }
+    .chip::before{
+      content:"";
+      width:6px;height:6px;border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 12px var(--cyan);
+    }
+
+    .floating-note{
+      position:absolute;
+      right:-18px;
+      bottom:54px;
+      display:flex;
+      align-items:center;
+      gap:11px;
+      max-width:220px;
+      padding:13px 15px;
+      border:1px solid rgba(73,227,165,.28);
+      border-radius:16px;
+      background:rgba(7,19,31,.92);
+      box-shadow:0 18px 44px rgba(0,0,0,.28);
+      backdrop-filter:blur(14px);
+      animation:floatNote 4s ease-in-out infinite alternate;
+    }
+    .floating-note svg{width:24px;color:var(--success);flex:0 0 auto}
+    .floating-note strong{display:block;font-size:.8rem}
+    .floating-note span{display:block;color:var(--muted);font-size:.7rem}
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:30px;
+      margin-bottom:38px;
+    }
+    .section-head>div{max-width:760px}
+    .section-head p{margin-bottom:0;color:var(--muted)}
+
+    .service-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:20px;
+    }
+    .card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:
+        linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),
+        var(--panel);
+      box-shadow:inset 0 1px rgba(255,255,255,.05);
+      backdrop-filter:blur(12px);
+      transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+    }
+    .card:hover{
+      transform:translateY(-5px);
+      border-color:var(--line-strong);
+      box-shadow:0 22px 50px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.07);
+    }
+    .service-card{
+      min-height:390px;
+      padding:28px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .service-card::after{
+      content:"";
+      position:absolute;
+      width:240px;
+      height:240px;
+      right:-90px;
+      top:-90px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(41,169,255,.16),transparent 66%);
+      pointer-events:none;
+    }
+    .service-card:nth-child(2)::after{background:radial-gradient(circle,rgba(255,79,216,.12),transparent 66%)}
+    .service-icon,.feature-icon,.step-icon{
+      width:50px;
+      height:50px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(74,244,255,.24);
+      border-radius:16px;
+      color:var(--cyan);
+      background:rgba(74,244,255,.065);
+      box-shadow:inset 0 0 20px rgba(74,244,255,.04);
+    }
+    .service-icon svg,.feature-icon svg,.step-icon svg{width:25px}
+    .service-card h3{margin-top:24px;font-size:clamp(1.5rem,3vw,2.4rem)}
+    .service-card p{max-width:560px;color:var(--muted)}
+    .service-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:24px 0;
+    }
+    .service-meta span{
+      padding:.45rem .7rem;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:999px;
+      color:#cbd7e8;
+      background:rgba(255,255,255,.035);
+      font-size:.75rem;
+      font-weight:750;
+    }
+    .card-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      width:max-content;
+      color:#bfeeff;
+      font-weight:850;
+      text-decoration:none;
+    }
+    .card-link svg{width:18px;transition:transform .2s ease}
+    .card-link:hover svg{transform:translateX(4px)}
+
+    .benefit-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+      margin-top:22px;
+    }
+    .benefit{
+      padding:20px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      background:rgba(255,255,255,.025);
+    }
+    .benefit strong{display:block;margin:12px 0 5px}
+    .benefit p{margin:0;color:var(--muted);font-size:.9rem}
+    .feature-icon{width:42px;height:42px;border-radius:14px}
+    .feature-icon svg{width:21px}
+
+    .pricing-wrap{
+      display:grid;
+      grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr);
+      gap:22px;
+      align-items:stretch;
+    }
+    .pricing-main{
+      padding:28px;
+    }
+    .price-table{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+    .price-row{
+      width:100%;
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr) auto auto;
+      gap:14px;
+      align-items:center;
+      min-height:88px;
+      padding:15px 17px;
+      border:1px solid rgba(255,255,255,.075);
+      border-radius:16px;
+      color:inherit;
+      background:rgba(255,255,255,.022);
+      text-align:left;
+      cursor:pointer;
+      box-shadow:inset 0 1px rgba(255,255,255,.025);
+      transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;
+    }
+    .price-row:hover{
+      transform:translateY(-2px);
+      border-color:rgba(74,244,255,.3);
+      background:rgba(74,244,255,.045);
+    }
+    .price-row:focus-visible{
+      outline:3px solid rgba(74,244,255,.28);
+      outline-offset:3px;
+    }
+    .price-row[aria-pressed="true"]{
+      border-color:rgba(74,244,255,.58);
+      background:
+        linear-gradient(90deg,rgba(41,169,255,.12),rgba(130,87,255,.055)),
+        rgba(255,255,255,.035);
+      box-shadow:0 12px 30px rgba(20,150,255,.09),inset 3px 0 var(--cyan),inset 0 1px rgba(255,255,255,.055);
+    }
+    .price-choice-mark{
+      width:20px;
+      height:20px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(159,176,201,.44);
+      border-radius:50%;
+      background:rgba(255,255,255,.025);
+      transition:.2s ease;
+    }
+    .price-choice-mark::after{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 14px var(--cyan);
+      opacity:0;
+      transform:scale(.35);
+      transition:.2s ease;
+    }
+    .price-row[aria-pressed="true"] .price-choice-mark{
+      border-color:var(--cyan);
+    }
+    .price-row[aria-pressed="true"] .price-choice-mark::after{
+      opacity:1;
+      transform:scale(1);
+    }
+    .price-copy strong{display:block;font-size:1.06rem}
+    .price-copy span{display:block;color:var(--muted);font-size:.86rem}
+    .price{
+      color:#fff;
+      font-size:clamp(1.35rem,3vw,2rem);
+      font-weight:950;
+      letter-spacing:-.04em;
+      white-space:nowrap;
+    }
+    .price-option-arrow{
+      width:32px;
+      height:32px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:10px;
+      color:var(--muted);
+      background:rgba(255,255,255,.025);
+      transition:.2s ease;
+    }
+    .price-option-arrow svg{width:16px}
+    .price-row:hover .price-option-arrow,
+    .price-row[aria-pressed="true"] .price-option-arrow{
+      color:var(--cyan);
+      border-color:rgba(74,244,255,.24);
+      transform:translateX(2px);
+    }
+    .price-note{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      margin:18px 0 0;
+      color:var(--muted);
+      font-size:.84rem;
+    }
+    .price-note svg{width:18px;color:var(--warning);flex:0 0 auto;margin-top:2px}
+
+    .price-highlight{
+      min-height:100%;
+      padding:30px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:
+        radial-gradient(circle at 100% 0,rgba(130,87,255,.16),transparent 38%),
+        linear-gradient(145deg,rgba(40,169,255,.08),rgba(255,79,216,.035)),
+        rgba(10,20,36,.76);
+    }
+
+    .pricing-instruction{
+      min-height:28px;
+      margin-bottom:0;
+    }
+    .pricing-instruction .instruction-selected{
+      display:none;
+    }
+    .instruction-selected{
+      align-items:center;
+      gap:9px;
+      color:#bff7ff;
+      font-weight:850;
+    }
+    .instruction-selected svg{
+      width:23px;
+      flex:0 0 auto;
+      color:var(--cyan);
+      filter:drop-shadow(0 0 10px rgba(74,244,255,.55));
+      animation:mobileArrowBounce 1.05s ease-in-out infinite;
+    }
+
+    .guided-scroll-overlay{
+      position:fixed;
+      inset:0;
+      z-index:9998;
+      display:grid;
+      place-items:end center;
+      padding:0 18px 28px;
+      color:#dffbff;
+      background:rgba(2,7,16,.035);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease;
+    }
+    .guided-scroll-overlay::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto;
+      height:3px;
+      background:linear-gradient(90deg,var(--blue),var(--cyan),var(--violet),var(--pink));
+      transform-origin:left;
+      animation:guidedProgress 6s linear infinite;
+      box-shadow:0 0 20px rgba(74,244,255,.45);
+    }
+    .guided-scroll-overlay span{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:.72rem 1rem;
+      border:1px solid rgba(74,244,255,.22);
+      border-radius:999px;
+      background:rgba(5,13,27,.86);
+      box-shadow:0 14px 36px rgba(0,0,0,.28);
+      font-size:.78rem;
+      font-weight:850;
+      backdrop-filter:blur(14px);
+    }
+    .guided-scroll-overlay span::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 14px var(--cyan);
+      animation:guidedPulse .8s ease-in-out infinite alternate;
+    }
+    body.guided-scroll .guided-scroll-overlay{
+      opacity:1;
+      pointer-events:auto;
+      cursor:wait;
+    }
+    body.guided-scroll{
+      cursor:wait;
+      user-select:none;
+    }
+    body.guided-scroll a,
+    body.guided-scroll button,
+    body.guided-scroll input,
+    body.guided-scroll summary{
+      pointer-events:none!important;
+    }
+
+    .pricing-detail-inner{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      opacity:1;
+      transform:none;
+      transition:opacity .16s ease,transform .16s ease;
+    }
+    .pricing-detail-inner.is-changing{
+      opacity:0;
+      transform:translateY(7px);
+    }
+    .price-empty{
+      min-height:360px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:15px;
+      color:var(--muted);
+      text-align:center;
+    }
+    .price-empty-icon{
+      width:74px;
+      height:74px;
+      display:grid;
+      place-items:center;
+      border:1px dashed rgba(74,244,255,.3);
+      border-radius:22px;
+      color:var(--cyan);
+      background:rgba(74,244,255,.045);
+      box-shadow:inset 0 0 28px rgba(74,244,255,.035);
+    }
+    .price-empty-icon svg{width:34px}
+    .price-empty strong{
+      display:block;
+      color:#eef7ff;
+      font-size:clamp(1.45rem,3vw,2.1rem);
+    }
+    .price-empty p{max-width:310px;margin:0}
+    .price-kicker{
+      color:var(--cyan);
+      font-size:.75rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .big-price{
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+      margin:10px 0 8px;
+      font-size:clamp(3.2rem,7vw,5.8rem);
+      font-weight:950;
+      line-height:1;
+      letter-spacing:-.06em;
+    }
+    .big-price small{font-size:1rem;color:var(--muted);letter-spacing:0}
+    .check-list{
+      display:grid;
+      gap:10px;
+      padding:0;
+      margin:24px 0;
+      list-style:none;
+    }
+    .check-list li{
+      display:flex;
+      gap:10px;
+      color:#cbd7e6;
+    }
+    .check-list svg{width:19px;color:var(--success);flex:0 0 auto;margin-top:3px}
+
+    .process{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:22px;
+      position:relative;
+    }
+    .process::before{
+      content:"";
+      position:absolute;
+      left:15%;
+      right:15%;
+      top:36px;
+      height:1px;
+      background:linear-gradient(90deg,transparent,var(--line-strong),var(--line-strong),transparent);
+      z-index:0;
+    }
+    .step{
+      position:relative;
+      z-index:1;
+      padding:0 18px;
+      text-align:center;
+    }
+    .step-icon{
+      width:72px;
+      height:72px;
+      margin:0 auto 20px;
+      border-radius:50%;
+      background:#081426;
+      box-shadow:0 0 0 8px #07101f,0 0 32px rgba(41,169,255,.14);
+    }
+    .step h3{margin-bottom:8px}
+    .step p{margin:0;color:var(--muted)}
+    .step-number{
+      position:absolute;
+      top:-8px;
+      right:calc(50% - 42px);
+      width:24px;height:24px;
+      display:grid;place-items:center;
+      border-radius:50%;
+      color:#03111f;
+      background:var(--cyan);
+      font-size:.68rem;
+      font-weight:950;
+    }
+
+    .help-grid{
+      display:grid;
+      grid-template-columns:minmax(0,.9fr) minmax(400px,1.1fr);
+      gap:44px;
+      align-items:center;
+    }
+    .help-copy .check-list{margin-top:28px}
+    .config-card{padding:20px}
+    .config-top{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .config-top span{
+      color:var(--muted);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .config-status{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#bfffe3;
+      font-size:.74rem;
+      font-weight:850;
+    }
+    .config-status i{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--success);
+      box-shadow:0 0 12px var(--success);
+    }
+    .config-list{display:grid;gap:10px}
+    .config-row{
+      display:grid;
+      grid-template-columns:1fr 110px;
+      gap:18px;
+      align-items:center;
+      padding:13px 14px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      background:rgba(255,255,255,.025);
+    }
+    .config-row strong{display:block;font-size:.9rem}
+    .config-row small{color:var(--muted)}
+    .config-value{
+      padding:.45rem .65rem;
+      border:1px solid rgba(74,244,255,.14);
+      border-radius:10px;
+      color:#c7fbff;
+      background:rgba(74,244,255,.045);
+      text-align:center;
+      font-size:.84rem;
+      font-weight:850;
+    }
+
+    .legal-box{
+      padding:30px;
+    }
+    .legal-summary{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:16px;
+      align-items:center;
+      cursor:pointer;
+      list-style:none;
+    }
+    .legal-summary::-webkit-details-marker{display:none}
+    .legal-summary .feature-icon{margin:0}
+    .legal-summary h3{margin:0}
+    .legal-summary p{margin:5px 0 0;color:var(--muted)}
+    .legal-chevron{
+      width:42px;height:42px;
+      display:grid;place-items:center;
+      border:1px solid var(--line);
+      border-radius:13px;
+      color:#bfeeff;
+      background:rgba(255,255,255,.03);
+      transition:transform .25s ease;
+    }
+    details[open] .legal-chevron{transform:rotate(180deg)}
+    .legal-content{
+      margin-top:22px;
+      padding-top:22px;
+      border-top:1px solid rgba(255,255,255,.065);
+      color:#c4cede;
+    }
+    .legal-content p:last-child{margin-bottom:0}
+
+    .faq-grid{display:grid;gap:12px}
+    .faq{
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:18px;
+      background:rgba(255,255,255,.025);
+      overflow:hidden;
+    }
+    .faq summary{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:center;
+      padding:20px 22px;
+      cursor:pointer;
+      list-style:none;
+      font-weight:850;
+    }
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{
+      content:"+";
+      width:30px;height:30px;
+      display:grid;place-items:center;
+      flex:0 0 auto;
+      border:1px solid var(--line);
+      border-radius:10px;
+      color:var(--cyan);
+      transition:transform .2s ease;
+    }
+    .faq[open] summary::after{transform:rotate(45deg)}
+    .faq p{padding:0 22px 20px;margin:0;color:var(--muted)}
+
+    .contact-card{
+      position:relative;
+      overflow:hidden;
+      padding:clamp(28px,6vw,64px);
+      border:1px solid var(--line-strong);
+      border-radius:32px;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 0,rgba(41,169,255,.16),transparent 48%),
+        linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015)),
+        rgba(8,17,31,.84);
+      box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.06);
+    }
+    .contact-card::before,
+    .contact-card::after{
+      content:"";
+      position:absolute;
+      width:220px;height:220px;border-radius:50%;
+      filter:blur(8px);
+      pointer-events:none;
+    }
+    .contact-card::before{
+      left:-120px;top:-120px;
+      background:radial-gradient(circle,rgba(74,244,255,.18),transparent 65%);
+    }
+    .contact-card::after{
+      right:-120px;bottom:-120px;
+      background:radial-gradient(circle,rgba(255,79,216,.13),transparent 65%);
+    }
+    .contact-card h2{max-width:850px;margin-inline:auto}
+    .contact-card .lead{margin-inline:auto}
+    .consent{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:11px;
+      margin:28px auto 22px;
+      color:#d4deeb;
+      cursor:pointer;
+      width:max-content;
+      max-width:100%;
+      text-align:left;
+    }
+    .consent input{
+      width:20px;height:20px;
+      margin-top:2px;
+      accent-color:var(--cyan);
+      flex:0 0 auto;
+    }
+    .email-reveal{
+      max-width:670px;
+      margin:26px auto 0;
+      padding:18px;
+      border:1px solid rgba(74,244,255,.3);
+      border-radius:18px;
+      background:rgba(74,244,255,.055);
+      opacity:0;
+      transform:translateY(8px);
+      pointer-events:none;
+      transition:.28s ease;
+    }
+    .email-reveal.show{
+      opacity:1;
+      transform:none;
+      pointer-events:auto;
+    }
+    .email-value{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      color:#bffbff;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:clamp(1rem,2.8vw,1.4rem);
+      font-weight:850;
+      overflow-wrap:anywhere;
+    }
+    .copy-btn{
+      min-height:40px;
+      padding:.55rem .8rem;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:11px;
+      color:#fff;
+      background:rgba(255,255,255,.055);
+      cursor:pointer;
+    }
+    .copy-status{
+      min-height:24px;
+      margin:8px 0 0;
+      color:var(--success);
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .site-footer{
+      padding:34px 0 40px;
+      border-top:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+    }
+    .footer-grid{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px}
+    .footer-links a{text-decoration:none}
+    .footer-links a:hover{color:#fff}
+
+    .back-top{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:80;
+      width:46px;height:46px;
+      display:grid;place-items:center;
+      border:1px solid var(--line);
+      border-radius:14px;
+      color:#fff;
+      background:rgba(7,16,31,.82);
+      box-shadow:0 12px 32px rgba(0,0,0,.28);
+      backdrop-filter:blur(12px);
+      opacity:0;
+      transform:translateY(12px);
+      pointer-events:none;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+    .back-top.show{opacity:1;transform:none;pointer-events:auto}
+    .back-top svg{width:20px}
+
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition:opacity .65s ease,transform .65s ease;
+    }
+    .reveal.visible{opacity:1;transform:none}
+
+    @keyframes pulseBar{
+      from{filter:saturate(.9);transform:scaleX(.94);transform-origin:left}
+      to{filter:saturate(1.3);transform:scaleX(1)}
+    }
+    @keyframes floatOrb{
+      from{transform:translate3d(0,0,0) rotate(0)}
+      to{transform:translate3d(-30px,24px,0) rotate(12deg)}
+    }
+    @keyframes floatNote{
+      from{transform:translateY(0)}
+      to{transform:translateY(-10px)}
+    }
+
+    @keyframes mobileArrowBounce{
+      0%,100%{transform:translateY(-3px)}
+      50%{transform:translateY(8px)}
+    }
+    @keyframes guidedProgress{
+      0%{transform:scaleX(0)}
+      100%{transform:scaleX(1)}
+    }
+    @keyframes guidedPulse{
+      from{opacity:.45;transform:scale(.82)}
+      to{opacity:1;transform:scale(1.15)}
+    }
+
+    @keyframes guideButtonSheen{
+      0%,68%{transform:translateX(-130%)}
+      84%,100%{transform:translateX(130%)}
+    }
+    @keyframes cornerSpark{
+      0%,100%{opacity:.15;transform:translate3d(0,0,0) scale(.75)}
+      50%{opacity:.65;transform:translate3d(2px,-3px,0) scale(1.15)}
+    }
+
+    @media (max-width:1050px){
+      .nav-links a{padding:.68rem .55rem;font-size:.72rem}
+      .hero-grid{grid-template-columns:1fr 420px;gap:38px}
+      .benefit-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (max-width:880px){
+      .menu-btn{display:block}
+      .nav-links{
+        position:absolute;
+        top:74px;
+        left:18px;
+        right:18px;
+        display:grid;
+        gap:4px;
+        padding:10px;
+        border:1px solid var(--line);
+        border-radius:18px;
+        background:rgba(5,10,21,.96);
+        box-shadow:0 26px 60px rgba(0,0,0,.4);
+        backdrop-filter:blur(18px);
+        opacity:0;
+        transform:translateY(-8px) scale(.98);
+        pointer-events:none;
+        transition:.2s ease;
       }
+      .nav-links.open{opacity:1;transform:none;pointer-events:auto}
+      .nav-links a{padding:.85rem 1rem}
+      .nav-links a.active::after{display:none}
 
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: undefined;
-        text-transform: undefined;
-        letter-spacing: 0.02em;
-        line-height: 1.6;
-        color: var(--color-on-surface);
-        background: var(--color-surface);
+      .hero{min-height:auto;padding-top:124px}
+      .hero-grid{grid-template-columns:1fr}
+      .hero-copy{text-align:center}
+      .hero-copy .lead{margin-inline:auto}
+      .hero-actions,.trust-row{justify-content:center}
+      .hero-panel{width:min(100%,620px);margin-inline:auto}
+      .floating-note{right:12px}
 
-        fill: var(--color-on-surface);
+      .service-grid,.pricing-wrap,.help-grid{grid-template-columns:1fr}
+      .process{gap:34px}
+      .process::before{display:none}
+      .section-head{align-items:start;flex-direction:column}
+    }
+
+
+    @media (max-width:880px) and (orientation:portrait){
+      .pricing-instruction.mobile-selected .instruction-default{
+        display:none;
       }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/animate.css@4.1.1/animate.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
-    />
-  </head>
-  <body>
-    <link rel="stylesheet" href="./style.css" />
-    <div>
-      <link href="./index.css" rel="stylesheet" />
+      .pricing-instruction.mobile-selected .instruction-selected{
+        display:inline-flex;
+      }
+    }
 
-      <div class="home-container10">
-        <navigation-wrapper class="navigation-wrapper">
-          <!--Navigation component-->
-          <div class="navigation-container1">
-            <nav class="navigation-root">
-              <div class="navigation-container">
-                <div class="navigation-brand">
-                  <a href="index.html">
-                    <div class="navigation-logo-link">
-                      <span class="navigation-author-tag">
-                        By Mechaniczny Jeż
-                      </span>
-                    </div>
-                  </a>
-                </div>
-                <div class="navigation-brand">
-                  <a href="pomoc-z-ustawieniami-vesc.html">
-                    <div class="navigation-logo-link">
-                      <span class="navigation-author-tag">
-                        Pomoc z ustawieniami VESC
-                      </span>
-                    </div>
-                  </a>
-                </div>
-                <div class="navigation-brand">
-                  <a href="kontakt.html">
-                    <div class="navigation-logo-link">
-                      <span class="navigation-author-tag">Kontakt</span>
-                    </div>
-                  </a>
-                </div>
-                <div class="navigation-desktop-menu">
-                  <ul class="navigation-links-list">
-                    <li>
-                      <a href="index.html">
-                        <div class="navigation-link"><span>Home</span></div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="pomoc-z-ustawieniami-vesc.html">
-                        <div class="navigation-link">
-                          <span>Pomoc z ustawieniami VESC</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="kontakt.html">
-                        <div class="navigation-link"><span>Kontakt</span></div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#WIPK">
-                        <div class="navigation-link"><span>WIPK</span></div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#Cennik">
-                        <div class="navigation-link"><span>Cennik</span></div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <button
-                  id="navigation-mobile-toggle"
-                  aria-label="Otwórz menu"
-                  aria-expanded="false"
-                  class="navigation-mobile-toggle"
-                >
+    @media (max-width:680px){
+      .container{width:min(calc(100% - 24px),var(--max))}
+      .section{padding:74px 0}
+      .section.compact{padding:56px 0}
+      h1{font-size:clamp(2.55rem,14vw,4.5rem)}
+      h2{font-size:clamp(2rem,10vw,3.25rem)}
+      .brand-copy span{display:none}
+      .hero-actions{display:grid}
+      .hero-actions .btn{width:100%}
+      .btn-vesc-guide{
+        min-width:0;
+        padding-right:42px;
+      }
+      .vesc-modal{
+        padding:10px;
+      }
+      .vesc-modal-panel{
+        max-height:92vh;
+        border-radius:22px;
+      }
+      .vesc-modal-head{
+        padding:20px 18px 16px;
+      }
+      .vesc-modal-body{
+        padding:18px;
+      }
+      .hero-panel{min-height:auto;padding:12px;border-radius:24px}
+      .telemetry{grid-template-columns:1fr}
+      .tele-card.wide{grid-column:auto}
+      .floating-note{position:static;margin-top:12px;max-width:none;animation:none}
+      .service-card{min-height:auto;padding:22px}
+      .benefit-grid,.process{grid-template-columns:1fr}
+      .process{gap:28px}
+      .step{padding:0}
+      .pricing-main,.price-highlight,.legal-box{padding:22px}
+      .price-row{grid-template-columns:auto minmax(0,1fr) auto;gap:12px}
+      .price-option-arrow{display:none}
+      .price{justify-self:end;font-size:1.25rem}
+      .price-copy span{font-size:.78rem}
+      .config-row{grid-template-columns:1fr}
+      .config-value{text-align:left}
+      .legal-summary{grid-template-columns:auto 1fr}
+      .legal-chevron{grid-column:1/-1;width:100%;height:36px}
+      .footer-grid{align-items:flex-start;flex-direction:column}
+      .contact-card{border-radius:24px}
+      .consent{width:100%;justify-content:flex-start}
+    }
 
-                  >
-                    <path
-                      d="M4 6h16M4 12h16M4 18h16"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-              <div
-                id="navigation-mobile-overlay"
-                class="navigation-mobile-overlay"
-              >
-                <div class="navigation-overlay-header">
-                  <span class="navigation-author-tag">By Mechaniczny Jeż</span>
-                  <button
-                    id="navigation-mobile-close"
-                    aria-label="Zamknij menu"
-                    class="navigation-mobile-close"
-                  >
-                    <svg
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="24"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M18 6L6 18M6 6l12 12"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-                <div class="navigation-overlay-content">
-                  <ul class="navigation-mobile-links">
-                    <li>
-                      <a href="index.html">
-                        <div class="navigation-mobile-link">
-                          <span>Home</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="pomoc-z-ustawieniami-vesc.html">
-                        <div class="navigation-mobile-link">
-                          <span>Pomoc z ustawieniami VESC</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="kontakt.html">
-                        <div class="navigation-mobile-link">
-                          <span>Kontakt</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#WIPK">
-                        <div class="navigation-mobile-link">
-                          <span>WIPK</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#Cennik">
-                        <div class="navigation-mobile-link">
-                          <span>Cennik</span>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
-            <div class="navigation-container2">
-              <div class="navigation-container3">
-                <script defer="" data-name="navigation-logic">
-                  document.addEventListener('DOMContentLoaded', function() {
-                    (function(){
-                      const mobileToggle = document.getElementById("navigation-mobile-toggle")
-                      const mobileClose = document.getElementById("navigation-mobile-close")
-                      const mobileOverlay = document.getElementById("navigation-mobile-overlay")
-                      const mobileLinks = document.querySelectorAll(".navigation-mobile-link")
+    @media (prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+      .reveal{opacity:1;transform:none}
+    }
+  </style>
+</head>
 
-                      const openMenu = () => {
-                        mobileOverlay.classList.add("is-active")
-                        mobileToggle.setAttribute("aria-expanded", "true")
-                        document.body.style.overflow = "hidden"
-                      }
+<body>
+  <a class="skip-link" href="#main">Przejdź do treści</a>
 
-                      const closeMenu = () => {
-                        mobileOverlay.classList.remove("is-active")
-                        mobileToggle.setAttribute("aria-expanded", "false")
-                        document.body.style.overflow = ""
-                      }
+  <header class="site-header" id="header">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Mechaniczny Jeż — strona główna">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none">
+            <path d="M12 39c3-15 13-24 29-24l-4-7 10 6 6-3-2 8c5 4 8 10 8 17 0 12-10 21-23 21S12 49 12 39Z" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+            <path d="M15 30 6 23l12 1-4-11 10 7 1-13 7 11" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="43" cy="31" r="2.5" fill="currentColor"/>
+            <path d="M51 40c-4 2-8 2-12 0" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>Mechaniczny Jeż</strong>
+          <span>Montaż i konfiguracja VESC</span>
+        </span>
+      </a>
 
-                      mobileToggle.addEventListener("click", openMenu)
-                      mobileClose.addEventListener("click", closeMenu)
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Otwórz menu">
+        <span></span>
+      </button>
 
-                      mobileLinks.forEach((link) => {
-                        link.addEventListener("click", closeMenu)
-                      })
+      <nav class="nav-links" id="navLinks" aria-label="Nawigacja główna">
+        <a href="#home">Home</a>
+        <a href="#montaz">Montaż</a>
+        <a href="#pomoc">Pomoc z VESC</a>
+        <a href="#cennik">Cennik</a>
+        <a href="#wipk">WIPK</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
 
-                      window.addEventListener("keydown", (e) => {
-                        if (e.key === "Escape" && mobileOverlay.classList.contains("is-active")) {
-                          closeMenu()
-                        }
-                      })
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Montaż • konfiguracja • testy</p>
+          <h1>VESC <span class="accent">Montaż.</span></h1>
+          <p class="lead">
+            Profesjonalny montaż sterowników VESC do hulajnóg elektrycznych oraz pomoc w konfiguracji — jasno, bez chaosu i z testem działania przed wysyłką.
+          </p>
 
-                      let lastScrollTop = 0
-                      const navRoot = document.querySelector(".navigation-root")
-
-                      window.addEventListener(
-                        "scroll",
-                        () => {
-                          const currentScroll = window.pageYOffset || document.documentElement.scrollTop
-
-                          if (currentScroll > 50) {
-                            navRoot.style.backgroundColor = "color-mix(in oklab, var(--color-surface) 95%, black)"
-                            navRoot.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.4)"
-                          } else {
-                            navRoot.style.backgroundColor = "var(--color-surface)"
-                            navRoot.style.boxShadow = "none"
-                          }
-
-                          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll
-                        },
-                        { passive: true }
-                      )
-                    })()
-                  });
-                </script>
-              </div>
-            </div>
-            <div class="navigation-container4">
-              <div class="navigation-container5">
-                <style>
-                  @media (prefers-reduced-motion: reduce) {
-                  .navigation-mobile-overlay {
-                    transition: none;
-                  }
-                  .navigation-link, .navigation-mobile-link {
-                    transition: none;
-                  }
-                  }
-                </style>
-              </div>
-            </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#cennik">
+              Zobacz cennik
+              <svg width="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="#pomoc">Pomoc z ustawieniami</a>
+            <button class="btn btn-vesc-guide" id="openVescGuide" type="button">
+              <span class="guide-button-copy">
+                <strong>Jaki VESC</strong>
+                <small>wybrać?</small>
+              </span>
+              <span class="spark-cluster tl" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="spark-cluster tr" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="spark-cluster bl" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="spark-cluster br" aria-hidden="true"><i></i><i></i><i></i></span>
+            </button>
           </div>
-        </navigation-wrapper>
-        <div class="home-container11">
-          <div class="home-container12">
-            <style>
-              section {
-                padding: var(--spacing-4xl) 0;
-                overflow: hidden;
-              }
-            </style>
+
+          <div class="trust-row" aria-label="Najważniejsze informacje">
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Jasne zasady usługi
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2.2"/></svg>
+              Test przed wysyłką
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2"/><path d="m5 7 7 6 7-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              Kontakt e-mail
+            </div>
           </div>
         </div>
-        <nav class="nav-container">
-          <div class="nav-logo"><span>By Mechaniczny Jeż</span></div>
-          <div class="nav-links">
-            <a href="#home">
-              <div class="nav-link"><span>Home</span></div>
-            </a>
-            <a href="#wipk">
-              <div class="nav-link"><span>WIPK</span></div>
-            </a>
-            <a href="#cennik">
-              <div class="nav-link"><span>Cennik</span></div>
-            </a>
+
+        <div class="hero-panel reveal" aria-label="Najważniejsze zalety usługi">
+          <div class="window-bar">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>VESC // STANDARD USŁUGI</span>
+            <span class="window-status">Gotowe</span>
           </div>
-        </nav>
-        <section id="home" class="hero-wrapper">
-          <div class="home-thq-hero-content-elm hero-content">
-            <div class="home-container13">
-              <div class="home-thq-hero-block-elm1 hero-block">
-                <h1 class="home-thq-hero-title-elm1 home-hero-title hero-title">
-                  Montaż VESC
-                </h1>
-                <p
-                  class="home-thq-hero-subtitle-elm1 hero-subtitle home-hero-subtitle"
-                >
-                  <span>
-                    Mechaniczny Jeż Profesjonalnie zamontuje u ciebie VESC,
-                  </span>
-                  <br />
-                  <span>a ty nawet nie ruszysz palcem.</span>
-                </p>
-              </div>
-              <a href="#cennik" class="home-link4">
-                <div class="home-thq-btn-elm1 hero-cta btn-lg btn-primary btn">
-                  <span>Więcej</span>
-                </div>
-              </a>
-            </div>
-            <div class="home-container14">
-              <a href="pomoc-z-ustawieniami-vesc.html" class="home-navlink1">
-                <div class="home-thq-hero-block-elm2 hero-block">
-                  <p
-                    class="home-thq-hero-subtitle-elm2 hero-subtitle home-hero-subtitle"
-                  >
-                    Pomogę ci z konfiguracją sterowników.
-                  </p>
-                  <h1
-                    class="home-thq-hero-title-elm2 hero-title home-hero-title"
-                  >
-                    Pomoc z ustawieniami VESC
-                  </h1>
-                </div>
-              </a>
-              <a href="pomoc-z-ustawieniami-vesc.html" class="home-navlink2">
-                <div
-                  class="home-thq-hero-cta-elm hero-cta btn-lg btn-primary btn"
-                >
-                  <span>Więcej</span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </section>
-        <section id="cennik" class="pricing-section">
-          <div class="container">
-            <div class="pricing-card">
-              <div class="pricing-header">
-                <h2 class="section-title">Ceny Montażu</h2>
-                <button
-                  id="openPricingInfo"
-                  aria-label="Informacje o montażu"
-                  class="icon-btn"
-                >
-                  <svg
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <circle r="10" cx="12" cy="12"></circle>
-                      <path
-                        d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"
-                      ></path>
-                    </g>
-                  </svg>
-                </button>
-              </div>
-              <div class="table-responsive">
-                <table class="pricing-table">
-                  <thead>
-                    <tr>
-                      <th><span>Typ hulajnogi</span></th>
-                      <th><span>Standard</span></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><span>1 Silnik</span></td>
-                      <td><span>300zł</span></td>
-                    </tr>
-                    <tr>
-                      <td><span>2 Silniki</span></td>
-                      <td><span>400zł</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="pricing-footer">
-                <a href="#process">
-                  <div class="btn btn-accent"><span>Dalej</span></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section id="process" class="process-section">
-          <div class="container">
-            <h2 class="section-title">Jak to działa</h2>
-            <div class="process-steps">
-              <div class="step-item">
-                <div class="step-icon">
-                  <svg
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M10 18a8 8 0 1 0 0-16a8 8 0 0 0 0 16m3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79l-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089z"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 class="section-subtitle">Wysyłka</h3>
-                <p class="section-content">
-                  Wysyłasz pod mój adres hulajnogę kurierem.
-                </p>
-              </div>
-              <div class="step-divider"></div>
-              <div class="step-item">
-                <div class="step-icon">
-                  <svg
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 7v6m-8 6.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20M9 10h6"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 class="section-subtitle">Montaż</h3>
-                <p class="section-content">
-                  Przeznaczam sporo czasu, profesjonalnie montuję VESC.
-                </p>
-              </div>
-              <div class="step-divider"></div>
-              <div class="step-item">
-                <div class="step-icon">
-                  <svg
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="m15.75 10.5l4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 class="section-subtitle">Test &amp; Film</h3>
-                <p class="section-content">
-                  Nagrywam dowód poprawnego działania przed wysyłką.
-                </p>
-              </div>
-            </div>
-            <div class="process-action">
-              <a href="#wipk">
-                <div class="home-thq-btn-elm3 btn-outline btn">
-                  <span>Dalej</span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </section>
-        <section id="wipk" class="wipk-section">
-          <div class="wipk-alert">
-            <div class="wipk-content-header">
-              <h2 class="section-title">
-                Ważne Informacje Prawno-Kontaktowe (WIPK)
-              </h2>
-              <button
-                id="openWipkInfo"
-                aria-label="Ważna notatka"
-                class="icon-btn"
-              >
-                <svg
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <circle r="10" cx="12" cy="12"></circle>
-                    <path
-                      d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"
-                    ></path>
-                  </g>
+
+          <div class="telemetry info-telemetry">
+            <article class="tele-card">
+              <div class="tele-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="m4 15 5-5 4 4 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 6h4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
+              </div>
+              <div class="tele-feature-copy">
+                <h3>Profesjonalna robota</h3>
+                <p>Montaż wykonywany z wyjątkową precyzją i profesjonalizmem.</p>
+              </div>
+            </article>
+
+            <article class="tele-card">
+              <div class="tele-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/>
+                  <path d="M12 7.5V12l3.2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="tele-feature-copy">
+                <h3>Szybka realizacja</h3>
+                <p>Czas montażu: 1–3 dni.</p>
+              </div>
+            </article>
+
+            <article class="tele-card">
+              <div class="tele-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 5h16v11H8l-4 3V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M8 9h8m-8 3h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="tele-feature-copy">
+                <h3>Komunikacja</h3>
+                <p>Konsultujemy się z Tobą jasno i wyraźnie w dowolnym momencie.</p>
+              </div>
+            </article>
+
+            <article class="tele-card">
+              <div class="tele-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M8 11V7.5A3.5 3.5 0 0 1 11.5 4h1A3.5 3.5 0 0 1 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <path d="m9.5 15 1.7 1.7 3.6-3.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="tele-feature-copy">
+                <h3>Dowód zaufania</h3>
+                <p>Zaufało nam już wiele osób. Materiały z usług znajdziesz na TikToku.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="montaz">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Usługi</p>
+            <h2>Wybierz zakres pomocy</h2>
+            <p>Nie musisz przekopywać się przez dziesiątki ustawień samodzielnie. Wybierz montaż kompletnego układu albo samą konfigurację sterowników.</p>
+          </div>
+        </div>
+
+        <div class="service-grid">
+          <article class="card service-card reveal">
+            <div>
+              <div class="service-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14 5 9 10l5 5 5-5-5-5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m4 20 6-6M3 17l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <h3>Montaż VESC</h3>
+              <p>Kompletny montaż jednego lub dwóch sterowników w hulajnodze, uporządkowanie połączeń, konfiguracja oraz końcowe sprawdzenie działania.</p>
+              <div class="service-meta">
+                <span>1 lub 2 silniki</span>
+                <span>Konfiguracja</span>
+                <span>Test działania</span>
+              </div>
+            </div>
+            <a class="card-link" href="#cennik">Zobacz ceny montażu <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </article>
+
+          <article class="card service-card reveal">
+            <div>
+              <div class="service-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.6v-.1A1.7 1.7 0 0 0 8 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 3.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2V9.6h.1A1.7 1.7 0 0 0 3.6 8a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 8 3.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V2h4v.1A1.7 1.7 0 0 0 15 3.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 8c.1.38.31.73.6 1 .3.27.69.42 1.1.4h.1v4h-.1A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </div>
+              <h3>Pomoc z ustawieniami</h3>
+              <p>Dobór limitów i ustawień pod baterię, silniki oraz oczekiwany sposób jazdy. Pomoc od pierwszego połączenia do gotowej konfiguracji.</p>
+              <div class="service-meta">
+                <span>Limity prądowe</span>
+                <span>ADC / manetka</span>
+                <span>CAN / dual VESC</span>
+              </div>
+            </div>
+            <a class="card-link" href="#pomoc">Sprawdź zakres pomocy <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </article>
+        </div>
+
+        <div class="benefit-grid">
+          <article class="benefit reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-4Z" stroke="currentColor" stroke-width="2"/><path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <strong>Przejrzyste zasady</strong><p>Wiesz, co obejmuje usługa i jakie są koszty.</p>
+          </article>
+          <article class="benefit reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg></div>
+            <strong>Dobór pod zestaw</strong><p>Ustawienia uwzględniają silniki, baterię i sposób jazdy.</p>
+          </article>
+          <article class="benefit reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7h18v10H3z" stroke="currentColor" stroke-width="2"/><path d="M7 17v3m10-3v3M8 11h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <strong>Test przed wysyłką</strong><p>Po montażu otrzymujesz potwierdzenie działania.</p>
+          </article>
+          <article class="benefit reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v10H8l-3 3V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8m-8 3h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <strong>Kontakt e-mail</strong><p>Ustalenia pozostają czytelne i łatwe do odtworzenia.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="cennik">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Cennik</p>
+            <h2>Proste ceny, Montaż VESC</h2>
+            <p>Cennik obejmuje samą usługę montażu lub konfiguracji. Sterowniki VESC oraz wysyłka nie są wliczone.</p>
+          </div>
+        </div>
+
+        <div class="pricing-wrap">
+          <article class="card pricing-main reveal">
+            <h3>Wybierz usługę</h3>
+            <p class="muted pricing-instruction" id="pricingInstruction">
+              <span class="instruction-default">Kliknij jedną z opcji, aby zobaczyć jej szczegóły.</span>
+              <span class="instruction-selected">
+                Szczegóły wybranej usługi są niżej
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </p>
+
+            <div class="price-table" role="group" aria-label="Wybór usługi">
+              <button class="price-row" type="button" data-service="single" aria-pressed="false">
+                <span class="price-choice-mark" aria-hidden="true"></span>
+                <span class="price-copy"><strong>Hulajnoga — 1 silnik</strong><span>Montaż jednego sterownika VESC</span></span>
+                <span class="price">300 zł</span>
+                <span class="price-option-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+
+              <button class="price-row" type="button" data-service="dual" aria-pressed="false">
+                <span class="price-choice-mark" aria-hidden="true"></span>
+                <span class="price-copy"><strong>Hulajnoga — 2 silniki</strong><span>Montaż dwóch sterowników VESC</span></span>
+                <span class="price">400 zł</span>
+                <span class="price-option-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+
+              <button class="price-row" type="button" data-service="config" aria-pressed="false">
+                <span class="price-choice-mark" aria-hidden="true"></span>
+                <span class="price-copy"><strong>Konfiguracja VESC</strong><span>Pomoc z ustawieniami sterownika lub dual VESC</span></span>
+                <span class="price">100 zł</span>
+                <span class="price-option-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
               </button>
             </div>
-            <p class="section-content">
-              Poprzednio ukazany cennik pokazuje ceny tylko i wyłącznie samego
-              montażu VESC. Nie obejmuje on ceny samych sterowników VESC, ani
-              innych kosztów, np. wysyłki hulajnogi. Wspominając o wysyłce,
-              wysyłka kurierem to jedyny sposób przetransportowania e-hulajnogi
-              do mnie, który akceptuję bym wykonał montaż. Oryginalny sterownik
-              hulajnogi jak i wyświetlacz demontuję i jeśli państwo chcą,
-              wysyłam państwu razem z hulajnogą. Model sterownika VESC należy
-              kupić osobiście, a koszt wysyłki hulajnogi z państwa strony do
-              mnie, jak i spowrotem pokrywają państwo w każdym wypadku. Z uwagi,
-              że zawsze może trafić się wadliwy model VESC, moja usługa nie
-              posiada gwarancji w przypadku uszkodzenia sprzętu na dalszej
-              mecie, tzn. na przykład jeśli popełnię błąd w trakcie instalacji i
-              doprowadzę do uszkodzenia, pokrywam straty. Natomiast po każdym
-              montażu będę nagrywał film i wysyłał państwu na dowód, że montaż
-              odbył się poprawnie i hulajnoga też poprawnie funkcjonuje.
-              Natomiast kiedy państwo otrzymają już gotową hulajnogę spowrotem
-              od kuriera, a usterka pojawi się już PO otrzymaniu hulajnogi, nie
-              ponoszę w takim wypadku odpowiedzialności za straty. Ostatnie -
-              Kontaktując się ze mną i ustalając usługę, w pełni rozumieją i
-              akceptują państwo ten tekst prawny (WIPK). Nie opcji napisania na
-              mój E-Mail, i nie przeczytania tego tekstu, ponieważ dopiero po
-              nim ujawniam dane do kontaktu. Po więcej pytań zapraszam do
-              kontaktu email na dalszej stronie.
+
+            <p class="price-note">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 9v4m0 4h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M10.3 3.8 2.5 17.3A2 2 0 0 0 4.2 20h15.6a2 2 0 0 0 1.7-2.7L13.7 3.8a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2"/></svg>
+              Cena nie obejmuje sterowników, dodatkowych części ani kosztów przesyłki.
             </p>
-            <div class="wipk-footer">
-              <a href="#contact">
-                <div class="btn btn-accent"><span>Dalej</span></div>
-              </a>
-            </div>
-          </div>
-        </section>
-        <section id="contact" class="cta-section">
-          <div class="container">
-            <div class="cta-card">
-              <h2 class="hero-title home-hero-title">Zdecydowany?</h2>
-              <p class="section-subtitle">A może masz jeszcze pytanie?</p>
-              <div class="contact-box">
-                <div id="emailContainer" class="email-display hidden-email">
-                  <span id="emailText" tabindex="-1" class="home-text31">
-                    •••••••••••••••••••••
-                  </span>
-                </div>
-                <p class="section-content">
-                  Ustalisz montaż, pomoc, i dopytasz o więcej pisząc pod ten
-                  E-Mail.
-                </p>
-                <div class="acceptance-wrapper">
-                  <label class="checkbox-container">
-                    <input type="checkbox" id="acceptWipk" />
-                    <span class="checkmark"></span>
-                    <span>Przeczytałem i akceptuję WIPK</span>
-                  </label>
-                </div>
-                <div class="action-buttons">
-                  <button
-                    id="showEmailBtn"
-                    disabled="true"
-                    class="btn-primary btn"
-                  >
-                    Pokaż
-                  </button>
-                  <button id="copyEmailBtn" class="btn-secondary btn hidden">
-                    Skopiuj
-                  </button>
+          </article>
+
+          <article class="card price-highlight reveal" aria-live="polite">
+            <div class="pricing-detail-inner" id="pricingDetail">
+              <div class="price-empty">
+                <span class="price-empty-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5z" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 3"/><path d="M9 12h6m-3-3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+                <div>
+                  <strong>Pusto..</strong>
+                  <p>Zaznacz jedną z usług.</p>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-        <dialog id="pricingDialog" class="info-dialog">
-          <div class="dialog-content">
-            <button id="closePricingDialog" class="close-dialog">
-              <svg
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
-            </button>
-            <p class="section-content">
-              <span class="home-text33">Info</span>
-              <span>
-               Cena montażu VESC w hulajnodze
-                z dwoma silnikami spadła z 500zł do 400zł.
-              </span>
-              <br />
-              <br />
-              <span class="home-text35"> </span>
-              <span>
-
-              </span>
-              <br />
-              <br />
-              <span class="home-text37"> </span>
-              <span>
-
-              </span>
-            </p>
-          </div>
-        </dialog>
-        <dialog id="wipkDialog" class="info-dialog">
-          <div class="dialog-content">
-            <button id="closeWipkDialog" class="close-dialog">
-              <svg
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
-            </button>
-            <p class="section-content">
-              Zachowanie wyświetlacza i świateł wymaga zachowania oryginalnego
-              sterownika. Zazwyczaj nie mieści się on w hulajnodze razem z nowym
-              sterownikiem/sterownikami VESC, dlatego nie oferuję takiego
-              montażu z zachowaniem sterownika oryginalnego. Pytania proszę
-              zadać poprzez E-mail na następnej stronie.
-            </p>
-          </div>
-        </dialog>
-        <div class="home-container15">
-          <div class="home-container16">
-            <script>
-              document.addEventListener('DOMContentLoaded', function() {
-                ;(function () {
-                          // Dialog Management
-                          const pricingDialog = document.getElementById("pricingDialog")
-                          const wipkDialog = document.getElementById("wipkDialog")
-                          const openPricingBtn = document.getElementById("openPricingInfo")
-                          const closePricingBtn = document.getElementById("closePricingDialog")
-                          const openWipkBtn = document.getElementById("openWipkInfo")
-                          const closeWipkBtn = document.getElementById("closeWipkDialog")
-                          openPricingBtn.addEventListener("click", () => pricingDialog.showModal())
-                          closePricingBtn.addEventListener("click", () => pricingDialog.close())
-                          openWipkBtn.addEventListener("click", () => wipkDialog.showModal())
-                          closeWipkBtn.addEventListener("click", () => wipkDialog.close())
-                          // Close dialogs on backdrop click
-                          ;[pricingDialog, wipkDialog].forEach((dialog) => {
-                            dialog.addEventListener("click", (e) => {
-                              if (e.target === dialog) dialog.close()
-                            })
-                          })
-                          // Contact Logic
-                          const acceptWipk = document.getElementById("acceptWipk")
-                          const showEmailBtn = document.getElementById("showEmailBtn")
-                          const copyEmailBtn = document.getElementById("copyEmailBtn")
-                          const emailContainer = document.getElementById("emailContainer")
-                          const emailText = document.getElementById("emailText")
-                          const REAL_EMAIL = "2maze.kontakt@gmail.com"
-                          acceptWipk.addEventListener("change", (e) => {
-                            showEmailBtn.disabled = !e.target.checked
-                          })
-                          showEmailBtn.addEventListener("click", () => {
-                            emailContainer.classList.remove("hidden-email")
-                            emailContainer.classList.add("visible-email")
-                            emailText.textContent = REAL_EMAIL
-                            showEmailBtn.classList.add("hidden")
-                            copyEmailBtn.classList.remove("hidden")
-                          })
-                          copyEmailBtn.addEventListener("click", () => {
-                            const showSuccess = () => {
-                              const originalText = copyEmailBtn.textContent
-                              copyEmailBtn.textContent = "Skopiowano!"
-                              copyEmailBtn.classList.replace("btn-secondary", "btn-accent")
-                              setTimeout(() => {
-                                copyEmailBtn.textContent = originalText
-                                copyEmailBtn.classList.replace("btn-accent", "btn-secondary")
-                              }, 2000)
-                            }
-
-                            const fallbackCopy = () => {
-                              const wasHidden = emailContainer.classList.contains("hidden-email")
-                              emailContainer.classList.remove("hidden-email")
-                              emailContainer.classList.add("visible-email")
-                              emailText.textContent = REAL_EMAIL
-
-                              const range = document.createRange()
-                              range.selectNodeContents(emailText)
-                              const selection = window.getSelection()
-                              selection.removeAllRanges()
-                              selection.addRange(range)
-                              emailText.focus()
-
-                              let copied = false
-                              try {
-                                copied = document.execCommand("copy")
-                              } catch (err) {
-                                copied = false
-                              }
-
-                              selection.removeAllRanges()
-                              if (wasHidden) {
-                                emailContainer.classList.remove("visible-email")
-                                emailContainer.classList.add("hidden-email")
-                                emailText.textContent = "•••••••••••••••••••••"
-                              }
-                              return copied
-                            }
-
-                            if (navigator.clipboard && navigator.clipboard.writeText) {
-                              navigator.clipboard
-                                .writeText(REAL_EMAIL)
-                                .then(showSuccess)
-                                .catch(() => {
-                                  if (fallbackCopy()) showSuccess()
-                                })
-                            } else {
-                              if (fallbackCopy()) showSuccess()
-                            }
-                          })
-                          // Simple Scroll handling for nav links
-                          document.querySelectorAll(".nav-link").forEach((link) => {
-                            link.addEventListener("click", (e) => {
-                              const targetId = link.getAttribute("href")
-                              if (targetId.startsWith("#")) {
-                                const targetElement = document.querySelector(targetId)
-                                if (targetElement) {
-                                  e.preventDefault()
-                                  targetElement.scrollIntoView({ behavior: "smooth" })
-                                }
-                              }
-                            })
-                          })
-                        })()
-              });
-            </script>
-          </div>
+          </article>
         </div>
-        <div class="home-container17">
-          <div class="home-container18">
-            <style>
-                      @keyframes pulse {0% {transform: scale(1);
-              box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4);}
-              70% {transform: scale(1.05);
-              box-shadow: 0 0 0 15px rgba(0, 102, 255, 0);}
-              100% {transform: scale(1);
-              box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);}}
-            </style>
-          </div>
-        </div>
-        <a href="https://play.teleporthq.io/signup">
-          <div aria-label="Sign up to TeleportHQ" class="home-container19">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 19 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="home-icon28"
-            >
-              <path
-                d="M9.1017 4.64355H2.17867C0.711684 4.64355 -0.477539 5.79975 -0.477539 7.22599V13.9567C-0.477539 15.3829 0.711684 16.5391 2.17867 16.5391H9.1017C10.5687 16.5391 11.7579 15.3829 11.7579 13.9567V7.22599C11.7579 5.79975 10.5687 4.64355 9.1017 4.64355Z"
-                fill="#B23ADE"
-              ></path>
-              <path
-                d="M10.9733 12.7878C14.4208 12.7878 17.2156 10.0706 17.2156 6.71886C17.2156 3.3671 14.4208 0.649963 10.9733 0.649963C7.52573 0.649963 4.73096 3.3671 4.73096 6.71886C4.73096 10.0706 7.52573 12.7878 10.9733 12.7878Z"
-                fill="#FF5C5C"
-              ></path>
-              <path
-                d="M17.7373 13.3654C19.1497 14.1588 19.1497 15.4634 17.7373 16.2493L10.0865 20.5387C8.67402 21.332 7.51855 20.6836 7.51855 19.0968V10.5141C7.51855 8.92916 8.67402 8.2807 10.0865 9.07221L17.7373 13.3654Z"
-                fill="#2874DE"
-              ></path>
-            </svg>
-            <span class="home-text39">Built in TeleportHQ</span>
-          </div>
-        </a>
       </div>
-      <link
-        rel="canonical"
-        href="https://normal-foolish-dove-a6bkxz.teleporthq.site/"
-      />
+    </section>
+
+    <section class="section" id="jak-to-dziala">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Jak to działa</p>
+            <h2>Trzy proste kroki</h2>
+            <p>Najpierw ustalamy zakres usługi, potem wykonuję montaż lub konfigurację, a na końcu sprawdzam działanie.</p>
+          </div>
+        </div>
+
+        <div class="process">
+          <article class="step reveal">
+            <span class="step-number">1</span>
+            <div class="step-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" stroke="currentColor" stroke-width="2"/><circle cx="7" cy="18" r="2" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="18" r="2" stroke="currentColor" stroke-width="2"/></svg></div>
+            <h3>Wysyłka</h3>
+            <p>Po ustaleniu szczegółów wysyłasz hulajnogę kurierem pod wskazany adres.</p>
+          </article>
+
+          <article class="step reveal">
+            <span class="step-number">2</span>
+            <div class="step-icon"><svg viewBox="0 0 24 24" fill="none"><path d="m14.7 6.3 3 3M5 19l4.5-1 9.2-9.2a2.1 2.1 0 0 0-3-3L6.5 15 5 19Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <h3>Montaż</h3>
+            <p>Wykonuję montaż, porządkuję połączenia i konfiguruję sterowniki pod zestaw.</p>
+          </article>
+
+          <article class="step reveal">
+            <span class="step-number">3</span>
+            <div class="step-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="m10 9 5 3-5 3V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <h3>Test i film</h3>
+            <p>Przesyłam materiał potwierdzający wynik, odsyłam skończoną hulajnogę.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="pomoc">
+      <div class="container help-grid">
+        <div class="help-copy reveal">
+          <p class="eyebrow">Pomoc z VESC</p>
+          <h2>Od pierwszego połączenia do gotowych ustawień</h2>
+          <p class="lead">Pomogę dobrać parametry tak, aby sterowniki zachowywały się zgodnie z możliwościami baterii, silników i całego układu.</p>
+          <ul class="check-list">
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ustawienia silnika i baterii</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Konfiguracja manetki, hamulca i zakresów ADC</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Dual VESC, CAN oraz kierunek pracy silników</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wyjaśnienie, co i dlaczego zmieniamy</li>
+          </ul>
+          <a class="btn btn-primary" id="configContactBtn" href="#kontakt">Ustal konfigurację</a>
+        </div>
+
+        <article class="card config-card reveal" aria-label="Przykładowy panel konfiguracji">
+          <div class="config-top">
+            <span>Konfiguracja projektu</span>
+            <div class="config-status"><i></i>Gotowe</div>
+          </div>
+          <div class="config-list">
+            <div class="config-row">
+              <div><strong>Motor current max</strong><small>Maksymalny prąd silnika</small></div>
+              <div class="config-value">dobrany</div>
+            </div>
+            <div class="config-row">
+              <div><strong>Battery current max</strong><small>Limit po stronie baterii</small></div>
+              <div class="config-value">dobrany</div>
+            </div>
+            <div class="config-row">
+              <div><strong>ADC throttle</strong><small>Zakres pracy manetki</small></div>
+              <div class="config-value">skalibrowany</div>
+            </div>
+            <div class="config-row">
+              <div><strong>CAN status</strong><small>Komunikacja między sterownikami</small></div>
+              <div class="config-value">połączono</div>
+            </div>
+            <div class="config-row">
+              <div><strong>Final test</strong><small>Kontrola działania układu</small></div>
+              <div class="config-value">zaliczony</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section compact" id="wipk">
+      <div class="container">
+        <details class="card legal-box reveal">
+          <summary class="legal-summary">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14H7V3Z" stroke="currentColor" stroke-width="2"/><path d="M14 3v5h5M10 12h5m-5 4h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div>
+              <h3>Ważne informacje prawno-kontaktowe (WIPK)</h3>
+              <p>Zakres usługi, wysyłka, odpowiedzialność i zasady kontaktu.</p>
+            </div>
+            <span class="legal-chevron" aria-hidden="true">
+              <svg width="18" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </summary>
+
+          <div class="legal-content">
+            <p><strong>Cennik dotyczy wyłącznie usługi.</strong> Nie obejmuje ceny sterowników VESC, dodatkowych części ani kosztów wysyłki hulajnogi.</p>
+            <p>Wysyłka kurierska jest podstawową formą przekazania hulajnogi do montażu. Koszt dostarczenia sprzętu oraz odesłania po wykonaniu usługi pokrywa klient, chyba że strony uzgodnią inaczej.</p>
+            <p>Sterowniki VESC należy dostarczyć razem z hulajnogą. Przed rozpoczęciem prac ustalany jest zakres montażu, sposób podłączenia i oczekiwane ustawienia.</p>
+            <p>Po montażu wykonywany jest test działania. Materiał z testu stanowi potwierdzenie stanu sprzętu przed odesłaniem. Ryzyko uszkodzeń powstałych w transporcie ponosi przewoźnik lub strona odpowiedzialna zgodnie z warunkami danej przesyłki.</p>
+            <p>Nawiązanie kontaktu i zlecenie usługi oznacza zapoznanie się z niniejszymi informacjami oraz ich akceptację.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">FAQ</p>
+            <h2>Najczęstsze pytania</h2>
+          </div>
+        </div>
+
+        <div class="faq-grid">
+          <details class="faq reveal">
+            <summary>Czy cena montażu obejmuje sterownik VESC?</summary>
+            <p>Nie. Podane kwoty dotyczą samej usługi montażu. Sterownik, dodatkowe elementy i wysyłka są rozliczane osobno.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>Czy można zamówić tylko konfigurację?</summary>
+            <p>Tak. Pomoc z ustawieniami VESC kosztuje 100 zł i może obejmować dobór limitów, konfigurację manetki, CAN oraz wyjaśnienie sposobu podłączenia.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>Czy po montażu otrzymam potwierdzenie działania?</summary>
+            <p>Tak. Przed wysyłką wykonywany jest test, a klient otrzymuje materiał pokazujący poprawne działanie układu.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>Jak rozpocząć?</summary>
+            <p>Zaakceptuj WIPK w sekcji kontaktowej, odsłoń adres e-mail i opisz hulajnogę, silniki, baterię, posiadane sterowniki oraz oczekiwany zakres pomocy.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact" id="kontakt">
+      <div class="container">
+        <div class="contact-card reveal">
+          <p class="eyebrow">Kontakt</p>
+          <h2>Zdecydowany?</h2>
+          <p class="lead">Napisz, jaką usługę wybierasz na ten e-mail.</p>
+
+          <label class="consent">
+            <input id="consentCheck" type="checkbox">
+            <span>Przeczytałem i akceptuję WIPK.</span>
+          </label>
+
+          <button class="btn btn-magenta" id="showEmailBtn" type="button" disabled>Pokaż adres e-mail</button>
+
+          <div class="email-reveal" id="emailReveal" aria-live="polite">
+            <div class="email-value">
+              <a id="emailLink" href="mailto:2maze.kontakt@gmail.com">2maze.kontakt@gmail.com</a>
+              <button class="copy-btn" id="copyBtn" type="button">Kopiuj</button>
+            </div>
+            <p class="copy-status" id="copyStatus"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>© <span id="year"></span> Mechaniczny Jeż</div>
+      <nav class="footer-links" aria-label="Nawigacja w stopce">
+        <a href="#montaz">Montaż</a>
+        <a href="#pomoc">Pomoc z VESC</a>
+        <a href="#cennik">Cennik</a>
+        <a href="#wipk">WIPK</a>
+      </nav>
     </div>
-  </body>
+  </footer>
+
+  <div class="vesc-modal" id="vescGuideModal" role="dialog" aria-modal="true" aria-labelledby="vescGuideTitle" aria-hidden="true">
+    <div class="vesc-modal-panel" role="document">
+      <div class="vesc-modal-head">
+        <div>
+          <p class="eyebrow">Dobór sterownika</p>
+          <h2 id="vescGuideTitle">Jaki VESC wybrać?</h2>
+          <p>Orientacyjne propozycje sterowników dla popularnych modeli hulajnóg KuKirin.</p>
+        </div>
+        <button class="modal-close" id="closeVescGuide" type="button" aria-label="Zamknij okno">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="vesc-modal-body">
+        <div class="vesc-table-wrap">
+          <table class="vesc-table">
+            <thead>
+              <tr>
+                <th>Hulajnoga</th>
+                <th>Budżet VESC</th>
+                <th>Rekomendowany VESC</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>KuKirin G2</td>
+                <td>Flipsky FSESC 75100 V2.0</td>
+                <td>Flipsky FSESC 110100</td>
+              </tr>
+              <tr>
+                <td>KuKirin G2 Pro</td>
+                <td>Flipsky FSESC 75100 V2.0</td>
+                <td>Flipsky FSESC 110100</td>
+              </tr>
+              <tr>
+                <td>KuKirin G2 Master</td>
+                <td>Flipsky FSESC 75100 V2.0</td>
+                <td>Flipsky FSESC 110100</td>
+              </tr>
+              <tr>
+                <td>KuKirin G2 Max</td>
+                <td>Flipsky FSESC 75100 V2.0</td>
+                <td>Ubox 85V 150A</td>
+              </tr>
+              <tr>
+                <td>KuKirin G4</td>
+                <td>Flipsky FSESC 110100</td>
+                <td>Ubox 85V 150A</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="vesc-note">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 9v4m0 4h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M10.3 3.8 2.5 17.3A2 2 0 0 0 4.2 20h15.6a2 2 0 0 0 1.7-2.7L13.7 3.8a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Do mocniejszych hulajnóg zaleca się sterowniki 200A+.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="guided-scroll-overlay" id="guidedScrollOverlay" aria-hidden="true">
+    <span>Przechodzę przez najważniejsze informacje…</span>
+  </div>
+
+  <button class="back-top" id="backTop" type="button" aria-label="Wróć na górę">
+    <svg viewBox="0 0 24 24" fill="none"><path d="m6 15 6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <script>
+    (() => {
+      const header = document.getElementById('header');
+      const menuBtn = document.getElementById('menuBtn');
+      const navLinks = document.getElementById('navLinks');
+      const navAnchors = [...navLinks.querySelectorAll('a')];
+      const backTop = document.getElementById('backTop');
+      const consentCheck = document.getElementById('consentCheck');
+      const showEmailBtn = document.getElementById('showEmailBtn');
+      const emailReveal = document.getElementById('emailReveal');
+      const copyBtn = document.getElementById('copyBtn');
+      const copyStatus = document.getElementById('copyStatus');
+      const pricingInstruction = document.getElementById('pricingInstruction');
+      const configContactBtn = document.getElementById('configContactBtn');
+      const guidedScrollOverlay = document.getElementById('guidedScrollOverlay');
+      const openVescGuide = document.getElementById('openVescGuide');
+      const closeVescGuide = document.getElementById('closeVescGuide');
+      const vescGuideModal = document.getElementById('vescGuideModal');
+      const email = '2maze.kontakt@gmail.com';
+      let lastFocusedBeforeModal = null;
+      let guidedScrollRunning = false;
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const openVescGuideModal = () => {
+        lastFocusedBeforeModal = document.activeElement;
+        vescGuideModal.classList.add('open');
+        vescGuideModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        closeVescGuide.focus();
+      };
+
+      const closeVescGuideModal = () => {
+        vescGuideModal.classList.remove('open');
+        vescGuideModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+          lastFocusedBeforeModal.focus();
+        }
+      };
+
+      openVescGuide.addEventListener('click', openVescGuideModal);
+      closeVescGuide.addEventListener('click', closeVescGuideModal);
+
+      vescGuideModal.addEventListener('click', (event) => {
+        if (event.target === vescGuideModal) closeVescGuideModal();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && vescGuideModal.classList.contains('open')) {
+          closeVescGuideModal();
+        }
+      });
+
+      const handleScroll = () => {
+        const y = window.scrollY;
+        header.classList.toggle('is-scrolled', y > 18);
+        backTop.classList.toggle('show', y > 650);
+      };
+      handleScroll();
+      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      menuBtn.addEventListener('click', () => {
+        const open = menuBtn.getAttribute('aria-expanded') === 'true';
+        menuBtn.setAttribute('aria-expanded', String(!open));
+        navLinks.classList.toggle('open', !open);
+      });
+
+      navAnchors.forEach(link => {
+        link.addEventListener('click', () => {
+          menuBtn.setAttribute('aria-expanded', 'false');
+          navLinks.classList.remove('open');
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!navLinks.contains(event.target) && !menuBtn.contains(event.target)) {
+          menuBtn.setAttribute('aria-expanded', 'false');
+          navLinks.classList.remove('open');
+        }
+      });
+
+      backTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      consentCheck.addEventListener('change', () => {
+        showEmailBtn.disabled = !consentCheck.checked;
+        if (!consentCheck.checked) {
+          emailReveal.classList.remove('show');
+          showEmailBtn.textContent = 'Pokaż adres e-mail';
+          copyStatus.textContent = '';
+        }
+      });
+
+      showEmailBtn.addEventListener('click', () => {
+        emailReveal.classList.add('show');
+        showEmailBtn.textContent = 'Adres został odsłonięty';
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(email);
+          copyStatus.textContent = 'Skopiowano adres e-mail.';
+          copyBtn.textContent = 'Skopiowano';
+        } catch {
+          const input = document.createElement('textarea');
+          input.value = email;
+          input.setAttribute('readonly', '');
+          input.style.position = 'fixed';
+          input.style.opacity = '0';
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          input.remove();
+          copyStatus.textContent = 'Skopiowano adres e-mail.';
+          copyBtn.textContent = 'Skopiowano';
+        }
+        setTimeout(() => {
+          copyBtn.textContent = 'Kopiuj';
+          copyStatus.textContent = '';
+        }, 2200);
+      });
+
+      const priceOptions = [...document.querySelectorAll('.price-row[data-service]')];
+      const pricingDetail = document.getElementById('pricingDetail');
+      const checkIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+      const pricingServices = {
+        single: {
+          kicker: 'Montaż VESC — 1 silnik',
+          price: '300',
+          description: 'Kompletny montaż jednego sterownika VESC w hulajnodze z jednym napędzanym silnikiem.',
+          items: [
+            'Montaż i uporządkowanie połączeń',
+            'Konfiguracja VESC',
+            'Precyzyjne testowanie i dostrojenie'
+          ],
+          button: 'Wybieram montaż — 1 silnik',
+          route: 'montage'
+        },
+        dual: {
+          kicker: 'Montaż VESC — 2 silniki',
+          price: '400',
+          description: 'Kompletny montaż dwóch sterowników VESC w hulajnodze z napędem na oba koła.',
+          items: [
+            'Montaż dwóch sterowników VESC',
+            'Konfiguracja obu sterowników VESC',
+            'Końcowy test działania przed wysyłką'
+          ],
+          button: 'Wybieram montaż — 2 silniki',
+          route: 'montage'
+        },
+        config: {
+          kicker: 'Konfiguracja VESC',
+          price: '100',
+          description: 'Pomoc w ustawieniu sterownika lub zestawu dual VESC od początku do końca.',
+          items: [
+            'Podstawowe limity i parametry',
+            'Manetka, hamowanie i komunikacja CAN',
+            'Wyjaśnienie sposobu podłączenia'
+          ],
+          button: 'Wybieram konfigurację VESC',
+          route: 'config'
+        }
+      };
+
+      const renderPricingService = (serviceKey) => {
+        const service = pricingServices[serviceKey];
+        if (!service) return;
+
+        priceOptions.forEach(option => {
+          option.setAttribute('aria-pressed', String(option.dataset.service === serviceKey));
+        });
+
+        pricingDetail.classList.add('is-changing');
+
+        window.setTimeout(() => {
+          pricingDetail.innerHTML = `
+            <div>
+              <span class="price-kicker">${service.kicker}</span>
+              <div class="big-price">${service.price} <small>zł</small></div>
+              <p class="muted">${service.description}</p>
+            </div>
+            <ul class="check-list">
+              ${service.items.map(item => `<li>${checkIcon}${item}</li>`).join('')}
+            </ul>
+            <a class="btn btn-primary pricing-action" href="${service.route === 'config' ? '#pomoc' : '#kontakt'}" data-route="${service.route}">${service.button}</a>
+          `;
+          pricingDetail.classList.remove('is-changing');
+          pricingInstruction.classList.add('mobile-selected');
+        }, 150);
+      };
+
+      priceOptions.forEach(option => {
+        option.addEventListener('click', () => renderPricingService(option.dataset.service));
+      });
+
+      const wait = (milliseconds) => new Promise(resolve => window.setTimeout(resolve, milliseconds));
+
+      const easeInOutCubic = (value) =>
+        value < 0.5
+          ? 4 * value * value * value
+          : 1 - Math.pow(-2 * value + 2, 3) / 2;
+
+      const jumpToSection = (target) => {
+        if (!target) return;
+
+        const headerOffset = 86;
+        const targetY = Math.max(
+          0,
+          target.getBoundingClientRect().top + window.scrollY - headerOffset
+        );
+
+        const root = document.documentElement;
+        const previousBehavior = root.style.scrollBehavior;
+        root.style.scrollBehavior = 'auto';
+        window.scrollTo(0, targetY);
+
+        requestAnimationFrame(() => {
+          root.style.scrollBehavior = previousBehavior;
+        });
+      };
+
+      const animatedScrollTo = (target, duration = 900) => new Promise(resolve => {
+        if (!target) {
+          resolve();
+          return;
+        }
+
+        const headerOffset = 86;
+        const startY = window.scrollY;
+        const targetY = Math.max(
+          0,
+          target.getBoundingClientRect().top + window.scrollY - headerOffset
+        );
+        const distance = targetY - startY;
+
+        if (Math.abs(distance) < 4) {
+          resolve();
+          return;
+        }
+
+        const startedAt = performance.now();
+
+        const frame = (now) => {
+          const progress = Math.min((now - startedAt) / duration, 1);
+          const eased = easeInOutCubic(progress);
+          window.scrollTo(0, startY + distance * eased);
+
+          if (progress < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            resolve();
+          }
+        };
+
+        requestAnimationFrame(frame);
+      });
+
+      const blockUserInput = (event) => {
+        if (!guidedScrollRunning) return;
+        event.preventDefault();
+        event.stopPropagation();
+      };
+
+      ['wheel', 'touchmove'].forEach(eventName => {
+        window.addEventListener(eventName, blockUserInput, { passive: false });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!guidedScrollRunning) return;
+        const blockedKeys = [
+          'Tab', 'Enter', ' ', 'PageDown', 'PageUp',
+          'ArrowDown', 'ArrowUp', 'Home', 'End'
+        ];
+        if (blockedKeys.includes(event.key)) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }, true);
+
+      const runGuidedRoute = async (steps) => {
+        if (guidedScrollRunning) return;
+
+        guidedScrollRunning = true;
+        document.body.classList.add('guided-scroll');
+        document.body.setAttribute('aria-busy', 'true');
+        guidedScrollOverlay.setAttribute('aria-hidden', 'false');
+
+        try {
+          for (const step of steps) {
+            const section = document.querySelector(step.selector);
+            if (!section) continue;
+            await animatedScrollTo(section, step.duration || 900);
+            if (step.pause) await wait(step.pause);
+          }
+        } finally {
+          guidedScrollRunning = false;
+          document.body.classList.remove('guided-scroll');
+          document.body.removeAttribute('aria-busy');
+          guidedScrollOverlay.setAttribute('aria-hidden', 'true');
+        }
+      };
+
+      pricingDetail.addEventListener('click', (event) => {
+        const action = event.target.closest('.pricing-action');
+        if (!action || guidedScrollRunning) return;
+
+        event.preventDefault();
+        const route = action.dataset.route;
+
+        if (route === 'montage') {
+          runGuidedRoute([
+            { selector: '#jak-to-dziala', pause: 800 },
+            { selector: '#wipk', pause: 800 },
+            { selector: '#faq', pause: 800 },
+            { selector: '#kontakt', pause: 0 }
+          ]);
+          return;
+        }
+
+        if (route === 'config') {
+          jumpToSection(document.querySelector('#pomoc'));
+        }
+      });
+
+      configContactBtn.addEventListener('click', (event) => {
+        if (guidedScrollRunning) return;
+        event.preventDefault();
+
+        runGuidedRoute([
+          { selector: '#wipk', pause: 800 },
+          { selector: '#kontakt', pause: 0 }
+        ]);
+      });
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+      const sections = ['home', 'montaz', 'pomoc', 'cennik', 'wipk', 'kontakt']
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!visible) return;
+
+        navAnchors.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + visible.target.id);
+        });
+      }, { rootMargin: '-35% 0px -55% 0px', threshold: [0, .2, .5, .8] });
+
+      sections.forEach(section => sectionObserver.observe(section));
+    })();
+  </script>
+</body>
 </html>
