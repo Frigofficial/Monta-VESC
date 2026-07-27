@@ -2910,7 +2910,7 @@
         form.reset();
         messageField.hidden = true;
         messageCount.textContent = "0";
-        setStatus("Zgłoszenie zostało wysłane. Manager otrzyma je przez Firebase.", "success");
+        setStatus("Otrzymaliśmy zgłoszenie. Napiszemy do ciebie w ciągu 24h.", "success");
         startCooldownClock();
       } catch (error) {
         console.error("Firebase submission error:", error);
