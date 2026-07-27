@@ -1349,100 +1349,248 @@
     .faq[open] summary::after{transform:rotate(45deg)}
     .faq p{padding:0 22px 20px;margin:0;color:var(--muted)}
 
-    .contact-card{
+    .submission-card{
       position:relative;
       overflow:hidden;
-      padding:clamp(28px,6vw,64px);
+      display:grid;
+      grid-template-columns:minmax(0,.78fr) minmax(420px,1.22fr);
+      gap:38px;
+      padding:clamp(26px,5vw,58px);
       border:1px solid var(--line-strong);
       border-radius:32px;
-      text-align:center;
       background:
-        radial-gradient(circle at 50% 0,rgba(41,169,255,.16),transparent 48%),
-        linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015)),
-        rgba(8,17,31,.84);
+        radial-gradient(circle at 8% 5%,rgba(41,169,255,.15),transparent 34%),
+        radial-gradient(circle at 100% 100%,rgba(130,87,255,.12),transparent 38%),
+        linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.014)),
+        rgba(8,17,31,.86);
       box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.06);
     }
-    .contact-card::before,
-    .contact-card::after{
-      content:"";
-      position:absolute;
-      width:220px;height:220px;border-radius:50%;
-      filter:blur(8px);
-      pointer-events:none;
+    .submission-copy{
+      position:relative;
+      z-index:1;
+      align-self:start;
     }
-    .contact-card::before{
-      left:-120px;top:-120px;
-      background:radial-gradient(circle,rgba(74,244,255,.18),transparent 65%);
+    .submission-copy h2{
+      margin-bottom:16px;
+      font-size:clamp(1.75rem,3.45vw,3.15rem);
     }
-    .contact-card::after{
-      right:-120px;bottom:-120px;
-      background:radial-gradient(circle,rgba(255,79,216,.13),transparent 65%);
+    .submission-copy .lead{font-size:1.02rem}
+    .submission-points{
+      display:grid;
+      gap:13px;
+      padding:0;
+      margin:28px 0 0;
+      list-style:none;
     }
-    .contact-card h2{max-width:850px;margin-inline:auto}
-    .contact-card .lead{margin-inline:auto}
-    .consent{
+    .submission-points li{
       display:flex;
       align-items:flex-start;
-      justify-content:center;
       gap:11px;
-      margin:28px auto 22px;
-      color:#d4deeb;
-      cursor:pointer;
-      width:max-content;
-      max-width:100%;
-      text-align:left;
+      color:#cbd7e6;
     }
-    .consent input{
-      width:20px;height:20px;
-      margin-top:2px;
-      accent-color:var(--cyan);
+    .submission-points svg{
+      width:19px;
       flex:0 0 auto;
+      margin-top:3px;
+      color:var(--cyan);
     }
-    .email-reveal{
-      max-width:670px;
-      margin:26px auto 0;
-      padding:18px;
-      border:1px solid rgba(74,244,255,.3);
-      border-radius:18px;
-      background:rgba(74,244,255,.055);
-      opacity:0;
-      transform:translateY(8px);
-      pointer-events:none;
-      transition:.28s ease;
+    .submission-form{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:16px;
+      padding:24px;
+      border:1px solid rgba(255,255,255,.075);
+      border-radius:23px;
+      background:rgba(4,11,24,.52);
+      box-shadow:inset 0 1px rgba(255,255,255,.04);
     }
-    .email-reveal.show{
-      opacity:1;
-      transform:none;
-      pointer-events:auto;
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:15px;
     }
-    .email-value{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:center;
-      gap:12px;
-      color:#bffbff;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      font-size:clamp(1rem,2.8vw,1.4rem);
+    .form-field{
+      display:grid;
+      gap:7px;
+    }
+    .form-field.full{grid-column:1/-1}
+    .form-field label,
+    .field-label{
+      color:#dce7f6;
+      font-size:.82rem;
       font-weight:850;
-      overflow-wrap:anywhere;
+      letter-spacing:.025em;
     }
-    .copy-btn{
-      min-height:40px;
-      padding:.55rem .8rem;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:11px;
-      color:#fff;
-      background:rgba(255,255,255,.055);
+    .form-control{
+      width:100%;
+      min-height:49px;
+      padding:.78rem .9rem;
+      border:1px solid rgba(126,176,225,.22);
+      border-radius:13px;
+      color:#f5f9ff;
+      background:rgba(255,255,255,.035);
+      outline:none;
+      transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
+    }
+    .form-control::placeholder{color:#6f819a}
+    .form-control:focus{
+      border-color:rgba(74,244,255,.58);
+      background:rgba(74,244,255,.045);
+      box-shadow:0 0 0 4px rgba(74,244,255,.075);
+    }
+    select.form-control{
+      appearance:none;
+      background-image:
+        linear-gradient(45deg,transparent 50%,#9fc9e8 50%),
+        linear-gradient(135deg,#9fc9e8 50%,transparent 50%);
+      background-position:
+        calc(100% - 18px) 21px,
+        calc(100% - 12px) 21px;
+      background-size:6px 6px,6px 6px;
+      background-repeat:no-repeat;
+      padding-right:40px;
+    }
+    select.form-control option{
+      color:#eaf3ff;
+      background:#0c182b;
+    }
+    textarea.form-control{
+      min-height:142px;
+      resize:vertical;
+      line-height:1.55;
+    }
+    .question-toggle{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-height:50px;
+      padding:11px 13px;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:14px;
+      color:#dbe7f5;
+      background:rgba(255,255,255,.025);
       cursor:pointer;
     }
-    .copy-status{
+    .question-toggle input,
+    .confirm-check input{
+      width:20px;
+      height:20px;
+      flex:0 0 auto;
+      accent-color:var(--cyan);
+    }
+    .message-field[hidden]{display:none}
+    .message-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      margin-top:-2px;
+      color:var(--muted);
+      font-size:.75rem;
+    }
+    .submission-actions{
+      display:grid;
+      gap:10px;
+      margin-top:3px;
+    }
+    .submit-service-btn{
+      width:100%;
+      min-height:54px;
+    }
+    .submit-service-btn .lock-icon{
+      display:none;
+      width:19px;
+    }
+    .submit-service-btn.locked .lock-icon{display:block}
+    .submit-service-btn.locked{
+      color:#aab7c8;
+      border-color:rgba(255,255,255,.08);
+      background:rgba(255,255,255,.045);
+      box-shadow:none;
+    }
+    .form-status{
       min-height:24px;
-      margin:8px 0 0;
-      color:var(--success);
+      margin:0;
       font-size:.82rem;
       font-weight:800;
+      text-align:center;
     }
+    .form-status.success{color:var(--success)}
+    .form-status.error{color:#ff8ca5}
+    .form-status.info{color:#acdfff}
+    .cooldown-card{
+      display:none;
+      align-items:center;
+      gap:11px;
+      padding:12px 14px;
+      border:1px solid rgba(255,204,112,.2);
+      border-radius:14px;
+      color:#e5d9bb;
+      background:rgba(255,204,112,.055);
+      font-size:.8rem;
+    }
+    .cooldown-card.show{display:flex}
+    .cooldown-card svg{
+      width:21px;
+      flex:0 0 auto;
+      color:var(--warning);
+    }
+
+    .decision-modal{
+      position:fixed;
+      inset:0;
+      z-index:10040;
+      display:grid;
+      place-items:center;
+      padding:18px;
+      background:rgba(2,6,15,.78);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:opacity .2s ease,visibility .2s ease;
+    }
+    .decision-modal.open{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+    .decision-panel{
+      width:min(500px,100%);
+      padding:28px;
+      border:1px solid rgba(74,244,255,.31);
+      border-radius:25px;
+      background:
+        radial-gradient(circle at 100% 0,rgba(130,87,255,.17),transparent 38%),
+        linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018)),
+        #081225;
+      box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.07);
+      transform:translateY(14px) scale(.985);
+      transition:transform .22s ease;
+    }
+    .decision-modal.open .decision-panel{transform:none}
+    .decision-panel h3{
+      margin:0 0 10px;
+      font-size:clamp(1.45rem,4vw,2.15rem);
+    }
+    .decision-panel p{color:var(--muted)}
+    .confirm-check{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      margin:20px 0;
+      padding:13px 14px;
+      border:1px solid rgba(74,244,255,.16);
+      border-radius:14px;
+      color:#e7f8ff;
+      background:rgba(74,244,255,.045);
+      cursor:pointer;
+    }
+    .decision-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    body.submission-modal-open{overflow:hidden}
 
     .site-footer{
       padding:34px 0 40px;
@@ -1561,7 +1709,7 @@
       .hero-panel{width:min(100%,620px);margin-inline:auto}
       .floating-note{right:12px}
 
-      .service-grid,.pricing-wrap,.help-grid{grid-template-columns:1fr}
+      .service-grid,.pricing-wrap,.help-grid,.submission-card{grid-template-columns:1fr}
       .process{gap:34px}
       .process::before{display:none}
       .section-head{align-items:start;flex-direction:column}
@@ -1621,8 +1769,11 @@
       .legal-summary{grid-template-columns:auto 1fr}
       .legal-chevron{grid-column:1/-1;width:100%;height:36px}
       .footer-grid{align-items:flex-start;flex-direction:column}
-      .contact-card{border-radius:24px}
-      .consent{width:100%;justify-content:flex-start}
+      .submission-card{grid-template-columns:1fr;border-radius:24px;padding:22px}
+      .submission-form{padding:18px}
+      .form-grid{grid-template-columns:1fr}
+      .form-field.full{grid-column:auto}
+      .decision-actions{grid-template-columns:1fr}
     }
 
     @media (prefers-reduced-motion:reduce){
@@ -1662,7 +1813,8 @@
         <a href="#pomoc">Pomoc z VESC</a>
         <a href="#cennik">Cennik</a>
         <a href="#wipk">WIPK</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="#zgloszenie">Zgłoszenie</a>
+        <a href="#zgloszenie">Zgłoszenie</a>
       </nav>
     </div>
   </header>
@@ -1672,7 +1824,7 @@
       <div class="container hero-grid">
         <div class="hero-copy reveal">
           <p class="eyebrow">Montaż • konfiguracja • testy</p>
-          <h1>VESC <span class="accent">Montaż.</span></h1>
+          <h1>VESC, który działa <span class="accent">dokładnie tak, jak powinien.</span></h1>
           <p class="lead">
             Profesjonalny montaż sterowników VESC do hulajnóg elektrycznych oraz pomoc w konfiguracji — jasno, bez chaosu i z testem działania przed wysyłką.
           </p>
@@ -1846,7 +1998,7 @@
         <div class="section-head reveal">
           <div>
             <p class="eyebrow">Cennik</p>
-            <h2>Proste ceny, Montaż VESC</h2>
+            <h2>Proste ceny, bez zgadywania</h2>
             <p>Cennik obejmuje samą usługę montażu lub konfiguracji. Sterowniki VESC oraz wysyłka nie są wliczone.</p>
           </div>
         </div>
@@ -1921,7 +2073,7 @@
         <div class="section-head reveal">
           <div>
             <p class="eyebrow">Jak to działa</p>
-            <h2>Trzy proste kroki</h2>
+            <h2>Trzy czytelne kroki</h2>
             <p>Najpierw ustalamy zakres usługi, potem wykonuję montaż lub konfigurację, a na końcu sprawdzam działanie.</p>
           </div>
         </div>
@@ -1945,7 +2097,7 @@
             <span class="step-number">3</span>
             <div class="step-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="m10 9 5 3-5 3V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
             <h3>Test i film</h3>
-            <p>Przesyłam materiał potwierdzający wynik, odsyłam skończoną hulajnogę.</p>
+            <p>Przed odesłaniem sprawdzam działanie i przesyłam materiał potwierdzający wynik.</p>
           </article>
         </div>
       </div>
@@ -1963,7 +2115,7 @@
             <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Dual VESC, CAN oraz kierunek pracy silników</li>
             <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wyjaśnienie, co i dlaczego zmieniamy</li>
           </ul>
-          <a class="btn btn-primary" id="configContactBtn" href="#kontakt">Ustal konfigurację</a>
+          <a class="btn btn-primary" id="configContactBtn" href="#zgloszenie">Przejdź do zgłoszenia</a>
         </div>
 
         <article class="card config-card reveal" aria-label="Przykładowy panel konfiguracji">
@@ -2046,33 +2198,82 @@
           </details>
           <details class="faq reveal">
             <summary>Jak rozpocząć?</summary>
-            <p>Zaakceptuj WIPK w sekcji kontaktowej, odsłoń adres e-mail i opisz hulajnogę, silniki, baterię, posiadane sterowniki oraz oczekiwany zakres pomocy.</p>
+            <p>Wybierz usługę w cenniku, przejdź do formularza zgłoszenia i podaj imię, e-mail oraz opcjonalnie numer telefonu. Gdy masz pytanie, zaznacz odpowiednie pole i dopisz wiadomość.</p>
           </details>
         </div>
       </div>
     </section>
 
-    <section class="section compact" id="kontakt">
+    <section class="section compact" id="zgloszenie">
       <div class="container">
-        <div class="contact-card reveal">
-          <p class="eyebrow">Kontakt</p>
-          <h2>Zdecydowany?</h2>
-          <p class="lead">Napisz, jaką usługę wybierasz na ten e-mail.</p>
+        <div class="submission-card reveal">
+          <div class="submission-copy">
+            <p class="eyebrow">Zgłoszenie online</p>
+            <h2>Wyślij zgłoszenie. Odpowiemy w 24h.</h2>
+            <p class="lead">Wybierz usługę, prześlij. Otrzymam Twoje zgłoszenie, skontaktuję się z Tobą przez e-mail / nr tel., by ustalić szczegóły.</p>
 
-          <label class="consent">
-            <input id="consentCheck" type="checkbox">
-            <span>Przeczytałem i akceptuję WIPK.</span>
-          </label>
-
-          <button class="btn btn-magenta" id="showEmailBtn" type="button" disabled>Pokaż adres e-mail</button>
-
-          <div class="email-reveal" id="emailReveal" aria-live="polite">
-            <div class="email-value">
-              <a id="emailLink" href="mailto:2maze.kontakt@gmail.com">2maze.kontakt@gmail.com</a>
-              <button class="copy-btn" id="copyBtn" type="button">Kopiuj</button>
-            </div>
-            <p class="copy-status" id="copyStatus"></p>
+            <ul class="submission-points">
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wybrana usługa trafia automatycznie do formularza.</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wiadomość jest wymagana tylko po zaznaczeniu „Mam pytanie”.</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Odpowiedź w ciągu 24h.</li>
+            </ul>
           </div>
+
+          <form class="submission-form" id="submissionForm" novalidate>
+            <div class="form-field full">
+              <label for="submissionService">Usługa</label>
+              <select class="form-control" id="submissionService" required>
+                <option value="">Wybierz usługę</option>
+                <option value="montaz_1">Montaż VESC — 1 silnik (300 zł)</option>
+                <option value="montaz_2">Montaż VESC — 2 silniki (400 zł)</option>
+                <option value="konfiguracja">Konfiguracja VESC (100 zł)</option>
+              </select>
+            </div>
+
+            <label class="question-toggle full">
+              <input id="hasQuestion" type="checkbox">
+              <span>Mam pytanie</span>
+            </label>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="customerName">Imię</label>
+                <input class="form-control" id="customerName" type="text" maxlength="80" autocomplete="name" placeholder="Wpisz imię" required>
+              </div>
+
+              <div class="form-field">
+                <label for="customerPhone">Numer telefonu <span class="muted">(opcjonalnie)</span></label>
+                <input class="form-control" id="customerPhone" type="tel" maxlength="32" autocomplete="tel" placeholder="np. 500 000 000">
+              </div>
+
+              <div class="form-field full">
+                <label for="customerEmail">E-mail</label>
+                <input class="form-control" id="customerEmail" type="email" maxlength="150" autocomplete="email" placeholder="nazwa@domena.pl" required>
+              </div>
+
+              <div class="form-field full message-field" id="messageField" hidden>
+                <label for="customerMessage">Treść wiadomości</label>
+                <textarea class="form-control" id="customerMessage" maxlength="500" placeholder="Wpisz pytanie — maksymalnie 500 znaków"></textarea>
+                <div class="message-meta">
+                  <span>Opisz możliwie dokładnie swój zestaw i problem.</span>
+                  <span><strong id="messageCount">0</strong>/500</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cooldown-card" id="cooldownCard" aria-live="polite">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Możliwość wysłania kolejnego zgłoszenia za <strong id="cooldownTime">--:--:--</strong>.</span>
+            </div>
+
+            <div class="submission-actions">
+              <button class="btn btn-primary submit-service-btn" id="submissionButton" type="submit">
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span id="submissionButtonText">Wyślij zgłoszenie</span>
+              </button>
+              <p class="form-status" id="submissionStatus" aria-live="polite"></p>
+            </div>
+          </form>
         </div>
       </div>
     </section>
@@ -2089,6 +2290,24 @@
       </nav>
     </div>
   </footer>
+
+  <div class="decision-modal" id="decisionModal" role="dialog" aria-modal="true" aria-labelledby="decisionTitle" aria-hidden="true">
+    <div class="decision-panel">
+      <p class="eyebrow">Potwierdzenie zgłoszenia</p>
+      <h3 id="decisionTitle">Czy jesteś w 100% zdecydowany?</h3>
+      <p>Nie zaznaczono opcji „Mam pytanie”, dlatego zgłoszenie zostanie potraktowane jako gotowość do zamówienia wybranej usługi.</p>
+
+      <label class="confirm-check">
+        <input id="decisionConfirm" type="checkbox">
+        <span>Tak, jestem zdecydowany i chcę wysłać zgłoszenie.</span>
+      </label>
+
+      <div class="decision-actions">
+        <button class="btn btn-secondary" id="decisionCancel" type="button">Wróć</button>
+        <button class="btn btn-primary" id="decisionSend" type="button" disabled>Wyślij ostatecznie</button>
+      </div>
+    </div>
+  </div>
 
   <div class="vesc-modal" id="vescGuideModal" role="dialog" aria-modal="true" aria-labelledby="vescGuideTitle" aria-hidden="true">
     <div class="vesc-modal-panel" role="document">
@@ -2171,18 +2390,12 @@
       const navLinks = document.getElementById('navLinks');
       const navAnchors = [...navLinks.querySelectorAll('a')];
       const backTop = document.getElementById('backTop');
-      const consentCheck = document.getElementById('consentCheck');
-      const showEmailBtn = document.getElementById('showEmailBtn');
-      const emailReveal = document.getElementById('emailReveal');
-      const copyBtn = document.getElementById('copyBtn');
-      const copyStatus = document.getElementById('copyStatus');
       const pricingInstruction = document.getElementById('pricingInstruction');
       const configContactBtn = document.getElementById('configContactBtn');
       const guidedScrollOverlay = document.getElementById('guidedScrollOverlay');
       const openVescGuide = document.getElementById('openVescGuide');
       const closeVescGuide = document.getElementById('closeVescGuide');
       const vescGuideModal = document.getElementById('vescGuideModal');
-      const email = '2maze.kontakt@gmail.com';
       let lastFocusedBeforeModal = null;
       let guidedScrollRunning = false;
 
@@ -2250,47 +2463,10 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      consentCheck.addEventListener('change', () => {
-        showEmailBtn.disabled = !consentCheck.checked;
-        if (!consentCheck.checked) {
-          emailReveal.classList.remove('show');
-          showEmailBtn.textContent = 'Pokaż adres e-mail';
-          copyStatus.textContent = '';
-        }
-      });
-
-      showEmailBtn.addEventListener('click', () => {
-        emailReveal.classList.add('show');
-        showEmailBtn.textContent = 'Adres został odsłonięty';
-      });
-
-      copyBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(email);
-          copyStatus.textContent = 'Skopiowano adres e-mail.';
-          copyBtn.textContent = 'Skopiowano';
-        } catch {
-          const input = document.createElement('textarea');
-          input.value = email;
-          input.setAttribute('readonly', '');
-          input.style.position = 'fixed';
-          input.style.opacity = '0';
-          document.body.appendChild(input);
-          input.select();
-          document.execCommand('copy');
-          input.remove();
-          copyStatus.textContent = 'Skopiowano adres e-mail.';
-          copyBtn.textContent = 'Skopiowano';
-        }
-        setTimeout(() => {
-          copyBtn.textContent = 'Kopiuj';
-          copyStatus.textContent = '';
-        }, 2200);
-      });
-
       const priceOptions = [...document.querySelectorAll('.price-row[data-service]')];
       const pricingDetail = document.getElementById('pricingDetail');
       const checkIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      let selectedServiceKey = '';
 
       const pricingServices = {
         single: {
@@ -2299,8 +2475,8 @@
           description: 'Kompletny montaż jednego sterownika VESC w hulajnodze z jednym napędzanym silnikiem.',
           items: [
             'Montaż i uporządkowanie połączeń',
-            'Konfiguracja VESC',
-            'Precyzyjne testowanie i dostrojenie'
+            'Konfiguracja sterownika pod cały zestaw',
+            'Test działania przed wysyłką'
           ],
           button: 'Wybieram montaż — 1 silnik',
           route: 'montage'
@@ -2311,7 +2487,7 @@
           description: 'Kompletny montaż dwóch sterowników VESC w hulajnodze z napędem na oba koła.',
           items: [
             'Montaż dwóch sterowników VESC',
-            'Konfiguracja obu sterowników VESC',
+            'Konfiguracja komunikacji CAN i obu napędów',
             'Końcowy test działania przed wysyłką'
           ],
           button: 'Wybieram montaż — 2 silniki',
@@ -2334,6 +2510,7 @@
       const renderPricingService = (serviceKey) => {
         const service = pricingServices[serviceKey];
         if (!service) return;
+        selectedServiceKey = serviceKey;
 
         priceOptions.forEach(option => {
           option.setAttribute('aria-pressed', String(option.dataset.service === serviceKey));
@@ -2351,7 +2528,7 @@
             <ul class="check-list">
               ${service.items.map(item => `<li>${checkIcon}${item}</li>`).join('')}
             </ul>
-            <a class="btn btn-primary pricing-action" href="${service.route === 'config' ? '#pomoc' : '#kontakt'}" data-route="${service.route}">${service.button}</a>
+            <a class="btn btn-primary pricing-action" href="#zgloszenie" data-service-key="${serviceKey}">Przejdź do zgłoszenia</a>
           `;
           pricingDetail.classList.remove('is-changing');
           pricingInstruction.classList.add('mobile-selected');
@@ -2469,36 +2646,31 @@
         }
       };
 
+      const serviceValueByKey = {
+        single: 'montaz_1',
+        dual: 'montaz_2',
+        config: 'konfiguracja'
+      };
+
+      const prepareSubmission = (serviceKey = selectedServiceKey) => {
+        const submissionService = document.getElementById('submissionService');
+        if (submissionService && serviceValueByKey[serviceKey]) {
+          submissionService.value = serviceValueByKey[serviceKey];
+          submissionService.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        document.getElementById('zgloszenie')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
       pricingDetail.addEventListener('click', (event) => {
         const action = event.target.closest('.pricing-action');
-        if (!action || guidedScrollRunning) return;
-
+        if (!action) return;
         event.preventDefault();
-        const route = action.dataset.route;
-
-        if (route === 'montage') {
-          runGuidedRoute([
-            { selector: '#jak-to-dziala', pause: 800 },
-            { selector: '#wipk', pause: 800 },
-            { selector: '#faq', pause: 800 },
-            { selector: '#kontakt', pause: 0 }
-          ]);
-          return;
-        }
-
-        if (route === 'config') {
-          jumpToSection(document.querySelector('#pomoc'));
-        }
+        prepareSubmission(action.dataset.serviceKey);
       });
 
       configContactBtn.addEventListener('click', (event) => {
-        if (guidedScrollRunning) return;
         event.preventDefault();
-
-        runGuidedRoute([
-          { selector: '#wipk', pause: 800 },
-          { selector: '#kontakt', pause: 0 }
-        ]);
+        prepareSubmission('config');
       });
 
       const revealObserver = new IntersectionObserver((entries) => {
@@ -2512,7 +2684,7 @@
 
       document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-      const sections = ['home', 'montaz', 'pomoc', 'cennik', 'wipk', 'kontakt']
+      const sections = ['home', 'montaz', 'pomoc', 'cennik', 'wipk', 'zgloszenie']
         .map(id => document.getElementById(id))
         .filter(Boolean);
 
@@ -2531,5 +2703,333 @@
       sections.forEach(section => sectionObserver.observe(section));
     })();
   </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      doc,
+      onSnapshot,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDJ_J_V--ajxWObJe2nwWAryKPCKzX9L84",
+      authDomain: "website-applies-manager---wam.firebaseapp.com",
+      projectId: "website-applies-manager---wam",
+      storageBucket: "website-applies-manager---wam.firebasestorage.app",
+      messagingSenderId: "1096865806168",
+      appId: "1:1096865806168:web:86380d0e08911dd5a0d72d",
+      measurementId: "G-7589JJRKKM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("submissionForm");
+    const serviceInput = document.getElementById("submissionService");
+    const questionInput = document.getElementById("hasQuestion");
+    const nameInput = document.getElementById("customerName");
+    const emailInput = document.getElementById("customerEmail");
+    const phoneInput = document.getElementById("customerPhone");
+    const messageField = document.getElementById("messageField");
+    const messageInput = document.getElementById("customerMessage");
+    const messageCount = document.getElementById("messageCount");
+    const submitButton = document.getElementById("submissionButton");
+    const submitButtonText = document.getElementById("submissionButtonText");
+    const statusBox = document.getElementById("submissionStatus");
+    const cooldownCard = document.getElementById("cooldownCard");
+    const cooldownTime = document.getElementById("cooldownTime");
+
+    const decisionModal = document.getElementById("decisionModal");
+    const decisionConfirm = document.getElementById("decisionConfirm");
+    const decisionCancel = document.getElementById("decisionCancel");
+    const decisionSend = document.getElementById("decisionSend");
+
+    const LOCK_KEY = "mechanicznyJezSubmissionLockUntil";
+    const LOCK_STARTED_KEY = "mechanicznyJezSubmissionLockStartedAt";
+    const CLIENT_ID_KEY = "mechanicznyJezSubmissionClientId";
+    const LOCK_DURATION = 24 * 60 * 60 * 1000;
+
+    const createClientId = () => {
+      if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+      return `client-${Date.now()}-${Math.random().toString(36).slice(2, 14)}`;
+    };
+
+    const getClientId = () => {
+      let value = localStorage.getItem(CLIENT_ID_KEY);
+      if (!value) {
+        value = createClientId();
+        localStorage.setItem(CLIENT_ID_KEY, value);
+      }
+      return value;
+    };
+
+    const clientId = getClientId();
+    let cooldownTimer = null;
+    let sending = false;
+    let pendingPayload = null;
+
+    const setStatus = (message = "", type = "") => {
+      statusBox.textContent = message;
+      statusBox.className = `form-status${type ? ` ${type}` : ""}`;
+    };
+
+    const formatRemaining = milliseconds => {
+      const totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000));
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return [hours, minutes, seconds]
+        .map(value => String(value).padStart(2, "0"))
+        .join(":");
+    };
+
+    const lockUntil = () => {
+      const value = Number(localStorage.getItem(LOCK_KEY) || "0");
+      return Number.isFinite(value) ? value : 0;
+    };
+
+    const isLocked = () => lockUntil() > Date.now();
+
+    const updateCooldown = () => {
+      const remaining = lockUntil() - Date.now();
+
+      if (remaining <= 0) {
+        localStorage.removeItem(LOCK_KEY);
+        localStorage.removeItem(LOCK_STARTED_KEY);
+        cooldownCard.classList.remove("show");
+        submitButton.classList.remove("locked");
+        submitButtonText.textContent = "Wyślij zgłoszenie";
+        submitButton.disabled = sending;
+        if (cooldownTimer) {
+          clearInterval(cooldownTimer);
+          cooldownTimer = null;
+        }
+        return;
+      }
+
+      cooldownCard.classList.add("show");
+      submitButton.classList.add("locked");
+      submitButton.disabled = true;
+      const formatted = formatRemaining(remaining);
+      cooldownTime.textContent = formatted;
+      submitButtonText.textContent = `Zablokowane — ${formatted}`;
+    };
+
+    const startCooldownClock = () => {
+      updateCooldown();
+      if (isLocked() && !cooldownTimer) {
+        cooldownTimer = setInterval(updateCooldown, 1000);
+      }
+    };
+
+    const closeDecisionModal = () => {
+      decisionModal.classList.remove("open");
+      decisionModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("submission-modal-open");
+      decisionConfirm.checked = false;
+      decisionSend.disabled = true;
+      pendingPayload = null;
+    };
+
+    const openDecisionModal = payload => {
+      pendingPayload = payload;
+      decisionConfirm.checked = false;
+      decisionSend.disabled = true;
+      decisionModal.classList.add("open");
+      decisionModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("submission-modal-open");
+      decisionConfirm.focus();
+    };
+
+    const validateAndBuildPayload = () => {
+      const service = serviceInput.value.trim();
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const hasQuestion = questionInput.checked;
+      const message = hasQuestion ? messageInput.value.trim() : "";
+
+      if (!service) {
+        serviceInput.focus();
+        throw new Error("Wybierz usługę.");
+      }
+      if (name.length < 2) {
+        nameInput.focus();
+        throw new Error("Wpisz imię.");
+      }
+      if (!email || !emailInput.checkValidity()) {
+        emailInput.focus();
+        throw new Error("Wpisz poprawny adres e-mail.");
+      }
+      if (hasQuestion && !message) {
+        messageInput.focus();
+        throw new Error("Wpisz treść pytania.");
+      }
+      if (message.length > 500) {
+        messageInput.focus();
+        throw new Error("Wiadomość może mieć maksymalnie 500 znaków.");
+      }
+
+      return {
+        name,
+        email,
+        phone,
+        service,
+        hasQuestion,
+        message,
+        clientId,
+        status: "nowe",
+        source: "strona-vesc",
+        createdAt: serverTimestamp()
+      };
+    };
+
+    const sendPayload = async payload => {
+      if (sending || isLocked()) {
+        startCooldownClock();
+        return;
+      }
+
+      sending = true;
+      submitButton.disabled = true;
+      submitButtonText.textContent = "Wysyłanie…";
+      setStatus("Łączenie z Firebase…", "info");
+
+      try {
+        await addDoc(collection(db, "zgloszenia"), payload);
+
+        const startedAt = Date.now();
+        const until = startedAt + LOCK_DURATION;
+        localStorage.setItem(LOCK_STARTED_KEY, String(startedAt));
+        localStorage.setItem(LOCK_KEY, String(until));
+
+        form.reset();
+        messageField.hidden = true;
+        messageCount.textContent = "0";
+        setStatus("Zgłoszenie zostało wysłane. Manager otrzyma je przez Firebase.", "success");
+        startCooldownClock();
+      } catch (error) {
+        console.error("Firebase submission error:", error);
+        setStatus(
+          "Nie udało się wysłać zgłoszenia. Sprawdź połączenie oraz reguły Firestore.",
+          "error"
+        );
+      } finally {
+        sending = false;
+        if (!isLocked()) {
+          submitButton.disabled = false;
+          submitButtonText.textContent = "Wyślij zgłoszenie";
+        }
+      }
+    };
+
+    questionInput.addEventListener("change", () => {
+      messageField.hidden = !questionInput.checked;
+      messageInput.required = questionInput.checked;
+      if (!questionInput.checked) {
+        messageInput.value = "";
+        messageCount.textContent = "0";
+      }
+    });
+
+    messageInput.addEventListener("input", () => {
+      messageCount.textContent = String(messageInput.value.length);
+    });
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      setStatus();
+
+      if (isLocked()) {
+        startCooldownClock();
+        setStatus("To urządzenie wysłało już zgłoszenie w ciągu ostatnich 24 godzin.", "info");
+        return;
+      }
+
+      let payload;
+      try {
+        payload = validateAndBuildPayload();
+      } catch (error) {
+        setStatus(error.message, "error");
+        return;
+      }
+
+      if (payload.hasQuestion) {
+        sendPayload(payload);
+      } else {
+        openDecisionModal(payload);
+      }
+    });
+
+    decisionConfirm.addEventListener("change", () => {
+      decisionSend.disabled = !decisionConfirm.checked;
+    });
+
+    decisionCancel.addEventListener("click", closeDecisionModal);
+
+    decisionSend.addEventListener("click", async () => {
+      if (!decisionConfirm.checked || !pendingPayload) return;
+      const payload = pendingPayload;
+      closeDecisionModal();
+      await sendPayload(payload);
+    });
+
+    decisionModal.addEventListener("click", event => {
+      if (event.target === decisionModal) closeDecisionModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && decisionModal.classList.contains("open")) {
+        closeDecisionModal();
+      }
+    });
+
+    window.addEventListener("storage", event => {
+      if (event.key === LOCK_KEY || event.key === LOCK_STARTED_KEY) {
+        startCooldownClock();
+      }
+    });
+
+    const unlockReference = doc(db, "submission_unlocks", clientId);
+
+    onSnapshot(
+      unlockReference,
+      snapshot => {
+        if (!snapshot.exists()) return;
+
+        const unlockedAt = snapshot.data()?.unlockedAt;
+        const unlockedAtMs =
+          unlockedAt && typeof unlockedAt.toMillis === "function"
+            ? unlockedAt.toMillis()
+            : 0;
+        const localLockStartedAt = Number(
+          localStorage.getItem(LOCK_STARTED_KEY) || "0"
+        );
+
+        if (
+          localLockStartedAt > 0
+          && unlockedAtMs >= localLockStartedAt
+        ) {
+          localStorage.removeItem(LOCK_KEY);
+          localStorage.removeItem(LOCK_STARTED_KEY);
+          startCooldownClock();
+          setStatus(
+            "Poprzednie zgłoszenie zostało usunięte przez managera. Możesz wysłać nowe.",
+            "success"
+          );
+        }
+      },
+      error => {
+        console.warn("Nie udało się sprawdzić zdalnego odblokowania:", error);
+      }
+    );
+
+    startCooldownClock();
+  </script>
+
 </body>
 </html>
